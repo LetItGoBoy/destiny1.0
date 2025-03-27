@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="title">八字排盘</view>
+  <view class="title">同乐命理八字排盘</view>
   <view class="section">
     <view class="section-header">选择性别</view>
     <radio-group class="gender-selector" bindchange="onGenderChange">
