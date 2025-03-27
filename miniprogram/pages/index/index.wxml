@@ -1,0 +1,33 @@
+<view class="container">
+  <view class="title">八字排盘</view>
+  <view class="section">
+    <view class="section-header">选择性别</view>
+    <radio-group class="gender-selector" bindchange="onGenderChange">
+      <label class="radio-label">
+        <radio value="male" checked="true"/> 男
+      </label>
+      <label class="radio-label">
+        <radio value="female"/> 女
+      </label>
+    </radio-group>
+  </view>
+  <view class="section">
+    <view class="section-header">选择出生日期</view>
+    <picker mode="date" bindchange="onDateChange" value="{{date}}">
+      <view class="picker">
+        {{date}}
+      </view>
+    </picker>
+  </view>
+  <view class="section">
+    <view class="section-header">选择出生时间</view>
+    <picker mode="time" bindchange="onTimeChange" value="{{time}}">
+      <view class="picker">
+        {{time}}
+      </view>
+    </picker>
+  </view>
+  <view class="section">
+    <button class="primary-button" bindtap="onStartPaipan">开始排盘</button>
+  </view>
+</view>

@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    justify-content: center; /* Optional: to center vertically */
+  }
+  .date-time-section, .bazi-section, .bazi-table, .dayun-table {
+    width: 100%;
+    text-align: center;
+  }
+  .label {
+    color: #999;
+    font-weight: bold;
+    margin-bottom:20px;
+
+  }
+  .bazi-table, .dayun-table {
+    display: block;
+    margin-top: 20px;
+  }
+  .bazi-row, .dayun-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .pillar, .dayun-cell {
+    flex: 1;
+    border: 1px solid #ddd;
+    margin: 2px;
+    padding: 5px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center; /* Optional: to center the text */
+    justify-content: center; /* Optional: to center vertically */
+  }
+  
+  .commentary-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #1AAD19; /* WeChat green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  /* Adjust the sizes as needed to fit your content */
+  .pillar {
+    height: 40px; /* Set a fixed height for the BaZi cells */
+    font-size: 1em;
+  }
+  .shishenT{
+  
+    height: 40px; /* Set a fixed height for the BaZi cells */
+  }
+  .shishen {
+    margin-top: 20px;
+    height: 80px; /* Set a fixed height for the BaZi cells */
+  }
+  .dayun-cell {
+    height: 30px; /* Set a fixed height for DaYun cells */
+    line-height: 30px; /* Center the text vertically */
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+.years{
+    font-size: 9px;
+    
+}

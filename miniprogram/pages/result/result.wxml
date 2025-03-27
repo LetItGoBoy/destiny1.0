@@ -1,0 +1,83 @@
+<view class="container">
+  <view class="date-time-section">
+    <view class="date">日期:</view>
+    <view>{{date}}</view>
+    <view class="time">时间:</view>
+    <view>{{time}}</view>
+  </view>
+  
+  <!-- BaZi Table -->
+  <view class="bazi-table">
+    <view class="bazi-row">
+      <view class="label">年柱</view>
+      <view class="label">月柱</view>
+      <view class="label">日柱</view>
+      <view class="label">时柱</view>
+    </view>
+    <view class="bazi-content">
+        <view class="bazi-row">
+        <view class="shishenT  ten-gods-cell">{{tenGods.stems.year}}</view>
+        <view class="shishenT  ten-gods-cell">{{tenGods.stems.month}}</view>
+        <view class="shishenT  ten-gods-cell">{{tenGods.stems.day}}</view>
+        <view class="shishenT  ten-gods-cell">{{tenGods.stems.hour}}</view>
+        </view>
+        <view class="bazi-row">
+        <view class="pillar">{{bazi.year[0]}}</view>
+        <view class="pillar">{{bazi.month[0]}}</view>
+        <view class="pillar">{{bazi.day[0]}}</view>
+        <view class="pillar">{{bazi.hour[0]}}</view>
+        </view>
+        <view class="bazi-row">
+        <view class="pillar">{{bazi.year[1]}}</view>
+        <view class="pillar">{{bazi.month[1]}}</view>
+        <view class="pillar">{{bazi.day[1]}}</view>
+        <view class="pillar">{{bazi.hour[1]}}</view>
+        </view>
+        <view class="bazi-row">
+        <view class="shishen  ten-gods-cell">
+        <view wx:for="{{tenGods.branches.year}}" wx:key="index" >{{item}}</view>
+        </view>
+        <view class="shishen  ten-gods-cell">
+        <view wx:for="{{tenGods.branches.month}}" wx:key="index">{{item}}</view>
+        </view>
+        <view class="shishen  ten-gods-cell">
+        <view wx:for="{{tenGods.branches.day}}" wx:key="index">{{item}}</view>
+        </view>
+        <view class="shishen  ten-gods-cell">
+        <view wx:for="{{tenGods.branches.hour}}" wx:key="index" >{{item}}</view>
+        </view>
+        </view>
+    </view>
+  </view>
+  
+  <!-- DaYun Table -->
+  <view class="dayun-table">
+    <view class="title">大运列表</view>
+    <view>
+            <text>{{age+1}}岁起运</text>
+    </view>
+    <view class="dayun-row">
+    <!-- Display the years for each DaYun cycle -->
+    <view wx:for="{{daYunYears}}" wx:key="index" class="dayun-cell  years">{{item}}</view>
+  </view>
+    <view class="dayun-row time-spans">
+      <!-- Generate time spans for each DaYun cycle -->
+      <view wx:for="{{daYunStartAges}}" wx:key="index" class="dayun-cell">{{item}}</view>
+    </view>
+    <view class="dayun-row">
+      <!-- Generate characters for each DaYun cycle -->
+      <view wx:for="{{daYunList}}" wx:key="index" class="dayun-cell">{{item[0]}}</view>
+    </view>
+    <view class="dayun-row">
+      <!-- Generate characters for each DaYun cycle -->
+      <view wx:for="{{daYunList}}" wx:key="index" class="dayun-cell">{{item[1]}}</view>
+    </view>
+  </view>   
+
+  <button bindtap="navigateToBaziCommentary" class="commentary-button">批八字</button>
+</view>
+
+
+  
+
+
