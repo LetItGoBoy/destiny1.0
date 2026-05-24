@@ -73,75 +73,103 @@ page {
   50%       { opacity: 0.95; transform: scale(1.2); }
 }
 
-/* ===== 3D 星球（浑天仪式） ===== */
-.solar {
+/* ===== 实心 3D 星球 ===== */
+.stage {
   position: absolute;
-  top: 28%;
+  top: 26%;
   left: 50%;
   width: 0;
   height: 0;
-  perspective: 1200rpx;
+  perspective: 1400rpx;
 }
 
+/* 太阳大气晕 — 在 system 外层，不跟着旋转 */
 .sun-halo {
   position: absolute;
   top: 0;
   left: 0;
-  width: 300rpx;
-  height: 300rpx;
-  margin: -150rpx 0 0 -150rpx;
+  width: 380rpx;
+  height: 380rpx;
+  margin: -190rpx 0 0 -190rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 160, 70, 0.3) 0%, rgba(255, 120, 50, 0) 70%);
+  background: radial-gradient(circle,
+    rgba(255, 200, 100, 0.35) 0%,
+    rgba(255, 140, 50, 0.18) 45%,
+    rgba(255, 100, 30, 0) 70%);
   animation: haloPulse 4s ease-in-out infinite;
 }
 
 @keyframes haloPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.6; }
-  50%       { transform: scale(1.25); opacity: 1; }
+  0%, 100% { transform: scale(1);    opacity: 0.7; }
+  50%       { transform: scale(1.22); opacity: 1; }
 }
 
-.orrery-tilt {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: rotateX(-12deg);
-  transform-style: preserve-3d;
-}
-
-/* 整个星球绕 Y 轴自转——这是 3D 感的关键 */
-.orrery {
+/* 整体系统绕 Y 轴缓慢自转，让行星前后穿插产生 3D 感 */
+.system {
   position: absolute;
   top: 0;
   left: 0;
   transform-style: preserve-3d;
-  animation: orrerySpin 30s linear infinite;
+  animation: systemSpin 48s linear infinite;
 }
 
-@keyframes orrerySpin {
+@keyframes systemSpin {
   from { transform: rotateY(0deg); }
   to   { transform: rotateY(360deg); }
 }
 
+/* ── 太阳：实心受光球体 ── */
 .sun {
   position: absolute;
   top: 0;
   left: 0;
-  width: 76rpx;
-  height: 76rpx;
-  margin: -38rpx 0 0 -38rpx;
+  width: 100rpx;
+  height: 100rpx;
+  margin: -50rpx 0 0 -50rpx;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff8e0 0%, #ffcf6b 40%, #ff8a3c 100%);
-  box-shadow: 0 0 40rpx 12rpx rgba(255, 170, 80, 0.8),
-              0 0 100rpx 32rpx rgba(255, 120, 50, 0.35);
+  overflow: hidden;
+  background: radial-gradient(circle at 36% 32%,
+    #fffde0 0%,
+    #ffe080 20%,
+    #ffb830 50%,
+    #ff7a20 75%,
+    #e04800 100%);
+  box-shadow:
+    0 0 50rpx 16rpx rgba(255, 160, 60, 0.9),
+    0 0 130rpx 50rpx rgba(255, 100, 30, 0.4),
+    inset -14rpx -14rpx 30rpx rgba(180, 40, 0, 0.5);
   animation: sunPulse 4s ease-in-out infinite;
+}
+
+/* 太阳表面滚动纹理 — 造成自转视觉 */
+.sun-spot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(
+    8deg,
+    rgba(255, 100, 0, 0) 0%,
+    rgba(255, 80, 0, 0.12) 12%,
+    rgba(220, 60, 0, 0.22) 22%,
+    rgba(255, 100, 0, 0) 34%
+  );
+  animation: surfaceSpin 12s linear infinite;
 }
 
 @keyframes sunPulse {
   0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.1); }
+  50%       { transform: scale(1.07); }
 }
 
-/* 每条轨道是一个独立朝向的 3D 平面，交织成球壳 */
+@keyframes surfaceSpin {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100rpx); }
+}
+
+/* ── 不可见轨道面（仅定义平面方向，无边框） ── */
 .orbit {
   position: absolute;
   top: 0;
@@ -149,17 +177,7 @@ page {
   transform-style: preserve-3d;
 }
 
-.track {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border: 1rpx solid rgba(150, 180, 255, 0.22);
-  border-radius: 50%;
-}
-
-.spinner {
+.spin {
   position: absolute;
   top: 0;
   right: 0;
@@ -176,6 +194,7 @@ page {
   to   { transform: rotateZ(360deg); }
 }
 
+/* ── 行星：实心受光球体（径向渐变 + 暗部阴影） ── */
 .planet {
   position: absolute;
   top: 0;
@@ -183,38 +202,64 @@ page {
   border-radius: 50%;
 }
 
-/* 9 条轨道：不同朝向 + 大小，编织成球 */
-.ob1 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(0deg); }
-.ob2 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(51deg); }
-.ob3 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(102deg); }
-.ob4 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(153deg); }
-.ob5 { width: 510rpx; height: 510rpx; margin: -255rpx 0 0 -255rpx; transform: rotateX(32deg) rotateY(20deg); }
-.ob6 { width: 420rpx; height: 420rpx; margin: -210rpx 0 0 -210rpx; transform: rotateX(60deg) rotateY(80deg); }
-.ob7 { width: 540rpx; height: 540rpx; margin: -270rpx 0 0 -270rpx; transform: rotateX(85deg) rotateY(40deg); }
-.ob8 { width: 480rpx; height: 480rpx; margin: -240rpx 0 0 -240rpx; transform: rotateX(70deg) rotateY(125deg); }
-.ob9 { width: 500rpx; height: 500rpx; margin: -250rpx 0 0 -250rpx; transform: rotateX(50deg) rotateY(150deg); }
+/* 轨道面方向（各不相同 → 立体分布）+ 轨道半径（margin = -size/2 居中，top:0 = 在轨道顶端） */
+.ob1 { width: 360rpx; height: 360rpx; margin: -180rpx 0 0 -180rpx; transform: rotateX(72deg) rotateY(0deg); }
+.ob2 { width: 300rpx; height: 300rpx; margin: -150rpx 0 0 -150rpx; transform: rotateX(55deg) rotateY(65deg); }
+.ob3 { width: 450rpx; height: 450rpx; margin: -225rpx 0 0 -225rpx; transform: rotateX(80deg) rotateY(128deg); }
+.ob4 { width: 340rpx; height: 340rpx; margin: -170rpx 0 0 -170rpx; transform: rotateX(38deg) rotateY(195deg); }
+.ob5 { width: 420rpx; height: 420rpx; margin: -210rpx 0 0 -210rpx; transform: rotateX(65deg) rotateY(42deg); }
+.ob6 { width: 500rpx; height: 500rpx; margin: -250rpx 0 0 -250rpx; transform: rotateX(82deg) rotateY(100deg); }
 
 /* 公转速度 */
-.ob1 .spinner { animation-duration: 14s; }
-.ob2 .spinner { animation-duration: 18s; }
-.ob3 .spinner { animation-duration: 12s; }
-.ob4 .spinner { animation-duration: 20s; }
-.ob5 .spinner { animation-duration: 16s; }
-.ob6 .spinner { animation-duration: 22s; }
-.ob7 .spinner { animation-duration: 26s; }
-.ob8 .spinner { animation-duration: 19s; }
-.ob9 .spinner { animation-duration: 24s; }
+.ob1 .spin { animation-duration: 13s; }
+.ob2 .spin { animation-duration: 9s; }
+.ob3 .spin { animation-duration: 18s; }
+.ob4 .spin { animation-duration: 11s; }
+.ob5 .spin { animation-duration: 16s; }
+.ob6 .spin { animation-duration: 22s; }
 
-/* 行星：水 金 地 火 木 土 天 海 冥 */
-.p1 { width: 12rpx; height: 12rpx; margin: -6rpx 0 0 -6rpx;   background: radial-gradient(circle at 35% 35%, #d8cab0, #9a8a72); box-shadow: 0 0 8rpx rgba(216, 202, 176, 0.8); }
-.p2 { width: 18rpx; height: 18rpx; margin: -9rpx 0 0 -9rpx;   background: radial-gradient(circle at 35% 35%, #ffe2a8, #d99b52); box-shadow: 0 0 12rpx rgba(255, 200, 120, 0.9); }
-.p3 { width: 20rpx; height: 20rpx; margin: -10rpx 0 0 -10rpx; background: radial-gradient(circle at 35% 35%, #7ec8ff, #2a6fc4); box-shadow: 0 0 14rpx rgba(90, 160, 255, 1); }
-.p4 { width: 16rpx; height: 16rpx; margin: -8rpx 0 0 -8rpx;   background: radial-gradient(circle at 35% 35%, #ff9a6b, #c2421f); box-shadow: 0 0 12rpx rgba(255, 110, 70, 0.9); }
-.p5 { width: 34rpx; height: 34rpx; margin: -17rpx 0 0 -17rpx; background: radial-gradient(circle at 35% 35%, #f0d2a0, #c08a4e); box-shadow: 0 0 16rpx rgba(230, 190, 130, 0.8); }
-.p6 { width: 28rpx; height: 28rpx; margin: -14rpx 0 0 -14rpx; background: radial-gradient(circle at 35% 35%, #f3e0b0, #cba868); box-shadow: 0 0 14rpx rgba(230, 200, 130, 0.8); }
-.p7 { width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx; background: radial-gradient(circle at 35% 35%, #c4f4f4, #6fc6d4); box-shadow: 0 0 14rpx rgba(150, 230, 230, 0.9); }
-.p8 { width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx; background: radial-gradient(circle at 35% 35%, #8aa0ff, #3f57c8); box-shadow: 0 0 14rpx rgba(110, 140, 255, 1); }
-.p9 { width: 12rpx; height: 12rpx; margin: -6rpx 0 0 -6rpx;   background: radial-gradient(circle at 35% 35%, #d6c4b4, #998678); box-shadow: 0 0 8rpx rgba(210, 190, 170, 0.8); }
+/* 每颗行星：径向渐变打光（亮点偏左上 = 受光面），inset 阴影 = 暗部/分界线，box-shadow = 大气辉光 */
+.p1 {
+  width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx;
+  background: radial-gradient(circle at 32% 30%, #e8d5b0, #c0986a, #7a5230);
+  box-shadow: 0 0 10rpx 3rpx rgba(200, 150, 80, 0.7),
+              inset -4rpx -4rpx 8rpx rgba(40, 15, 0, 0.6);
+}
+
+.p2 {
+  width: 30rpx; height: 30rpx; margin: -15rpx 0 0 -15rpx;
+  background: radial-gradient(circle at 32% 30%, #ffe8c0, #e8a840, #9a6010);
+  box-shadow: 0 0 14rpx 4rpx rgba(255, 190, 80, 0.8),
+              inset -5rpx -5rpx 10rpx rgba(60, 20, 0, 0.55);
+}
+
+.p3 {
+  width: 34rpx; height: 34rpx; margin: -17rpx 0 0 -17rpx;
+  background: radial-gradient(circle at 32% 30%, #a8e0ff, #3a90e8, #0a3080);
+  box-shadow: 0 0 18rpx 5rpx rgba(80, 160, 255, 0.85),
+              inset -6rpx -6rpx 12rpx rgba(0, 10, 60, 0.55);
+}
+
+.p4 {
+  width: 26rpx; height: 26rpx; margin: -13rpx 0 0 -13rpx;
+  background: radial-gradient(circle at 32% 30%, #ffb090, #e05030, #801808);
+  box-shadow: 0 0 14rpx 4rpx rgba(255, 100, 60, 0.8),
+              inset -5rpx -5rpx 10rpx rgba(60, 5, 0, 0.6);
+}
+
+.p5 {
+  width: 50rpx; height: 50rpx; margin: -25rpx 0 0 -25rpx;
+  background: radial-gradient(circle at 32% 30%, #f8e0c0, #d8a870, #a06820);
+  box-shadow: 0 0 22rpx 7rpx rgba(220, 170, 90, 0.8),
+              inset -8rpx -8rpx 16rpx rgba(50, 20, 0, 0.5);
+}
+
+.p6 {
+  width: 42rpx; height: 42rpx; margin: -21rpx 0 0 -21rpx;
+  background: radial-gradient(circle at 32% 30%, #f8f0c8, #d8c080, #988030);
+  box-shadow: 0 0 20rpx 6rpx rgba(230, 200, 110, 0.8),
+              inset -7rpx -7rpx 14rpx rgba(50, 35, 0, 0.5);
+}
 
 /* ===== 前景 ===== */
 .container {
