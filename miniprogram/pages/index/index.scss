@@ -1,6 +1,7 @@
 page {
-  background: radial-gradient(ellipse at 50% 30%, #1a2150 0%, #0a0e27 55%, #05070f 100%);
+  background: radial-gradient(ellipse at 50% 18%, #161d4a 0%, #0a0e27 50%, #04050d 100%);
   min-height: 100vh;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
 }
 
 .page {
@@ -9,15 +10,58 @@ page {
   overflow-x: hidden;
 }
 
-/* ---------- 3D 背景层 ---------- */
+/* ============ 背景层 ============ */
 .cosmos {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
+/* 极光网格渐变 */
+.aurora {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.55;
+  animation: drift 22s ease-in-out infinite;
+}
+
+.a1 {
+  width: 620rpx;
+  height: 620rpx;
+  top: -180rpx;
+  left: -160rpx;
+  background: radial-gradient(circle, rgba(122, 90, 248, 0.7) 0%, rgba(122, 90, 248, 0) 70%);
+}
+
+.a2 {
+  width: 700rpx;
+  height: 700rpx;
+  top: 120rpx;
+  right: -240rpx;
+  background: radial-gradient(circle, rgba(56, 132, 255, 0.6) 0%, rgba(56, 132, 255, 0) 70%);
+  animation-delay: -7s;
+}
+
+.a3 {
+  width: 560rpx;
+  height: 560rpx;
+  bottom: 40rpx;
+  left: -120rpx;
+  background: radial-gradient(circle, rgba(236, 96, 196, 0.45) 0%, rgba(236, 96, 196, 0) 70%);
+  animation-delay: -14s;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(40rpx, 30rpx) scale(1.12); }
+}
+
+/* 星点 */
 .star {
   position: absolute;
   border-radius: 50%;
@@ -29,203 +73,283 @@ page {
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.15; transform: scale(0.7); }
-  50%      { opacity: 0.9;  transform: scale(1.1); }
+  0%, 100% { opacity: 0.12; transform: scale(0.6); }
+  50%      { opacity: 0.95; transform: scale(1.15); }
 }
 
-/* 轨道线 */
-.orbit-system {
+/* ============ 太阳系 ============ */
+.solar {
   position: absolute;
-  top: 32%;
+  top: 33%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+
+.sun {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70rpx;
+  height: 70rpx;
+  margin: -35rpx 0 0 -35rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6d8 0%, #ffcf6b 40%, #ff8a3c 100%);
+  box-shadow: 0 0 40rpx 12rpx rgba(255, 170, 80, 0.7), 0 0 90rpx 30rpx rgba(255, 120, 50, 0.35);
+  animation: sunPulse 4s ease-in-out infinite;
+}
+
+.sun-halo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 220rpx;
+  height: 220rpx;
+  margin: -110rpx 0 0 -110rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 160, 70, 0.35) 0%, rgba(255, 120, 50, 0) 70%);
+  animation: haloPulse 4s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%      { transform: scale(1.25); opacity: 1; }
+}
+
+.system {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(62deg);
 }
 
 .orbit {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  border: 1rpx solid rgba(122, 162, 255, 0.18);
+  top: 0;
+  left: 0;
+  border: 1rpx solid rgba(150, 180, 255, 0.14);
   border-radius: 50%;
   transform-style: preserve-3d;
-}
-
-.orbit-1 {
-  width: 640rpx;
-  height: 640rpx;
-  margin: -320rpx 0 0 -320rpx;
-  animation: orbitSpin 26s linear infinite;
-}
-
-.orbit-2 {
-  width: 820rpx;
-  height: 820rpx;
-  margin: -410rpx 0 0 -410rpx;
-  border-color: rgba(122, 162, 255, 0.12);
-  animation: orbitSpin 40s linear infinite reverse;
-}
-
-.orbit-3 {
-  width: 980rpx;
-  height: 980rpx;
-  margin: -490rpx 0 0 -490rpx;
-  border-color: rgba(160, 130, 255, 0.1);
-  animation: orbitSpin 58s linear infinite;
+  animation-name: spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .planet {
   position: absolute;
-  top: -7rpx;
+  top: 0;
   left: 50%;
-  width: 14rpx;
-  height: 14rpx;
-  margin-left: -7rpx;
   border-radius: 50%;
-  background: #9ec3ff;
-  box-shadow: 0 0 16rpx 4rpx rgba(122, 162, 255, 0.8);
+  transform: translate(-50%, -50%) rotateX(-62deg);
 }
 
-@keyframes orbitSpin {
-  from { transform: rotateX(72deg) rotateZ(0deg); }
-  to   { transform: rotateX(72deg) rotateZ(360deg); }
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotateZ(0deg); }
+  to   { transform: translate(-50%, -50%) rotateZ(360deg); }
 }
 
-/* 线框天球 */
-.sphere-scene {
+/* 轨道尺寸 + 速度 */
+.o1 { width: 170rpx;  height: 170rpx;  animation-duration: 7s; }
+.o2 { width: 250rpx;  height: 250rpx;  animation-duration: 11s; }
+.o3 { width: 340rpx;  height: 340rpx;  animation-duration: 16s; }
+.o4 { width: 430rpx;  height: 430rpx;  animation-duration: 22s; }
+.o5 { width: 550rpx;  height: 550rpx;  animation-duration: 30s; }
+.o6 { width: 680rpx;  height: 680rpx;  animation-duration: 40s; }
+.o7 { width: 790rpx;  height: 790rpx;  animation-duration: 50s; }
+.o8 { width: 880rpx;  height: 880rpx;  animation-duration: 62s; }
+.o9 { width: 950rpx;  height: 950rpx;  animation-duration: 76s; }
+
+/* 行星颜色 + 大小（水金地火木土天海冥） */
+.p1 { width: 12rpx; height: 12rpx; background: radial-gradient(circle at 35% 35%, #d8cab0, #9a8a72); box-shadow: 0 0 8rpx rgba(216, 202, 176, 0.7); }
+.p2 { width: 18rpx; height: 18rpx; background: radial-gradient(circle at 35% 35%, #ffe2a8, #d99b52); box-shadow: 0 0 10rpx rgba(255, 200, 120, 0.7); }
+.p3 { width: 20rpx; height: 20rpx; background: radial-gradient(circle at 35% 35%, #7ec8ff, #2a6fc4); box-shadow: 0 0 12rpx rgba(90, 160, 255, 0.8); }
+.p4 { width: 16rpx; height: 16rpx; background: radial-gradient(circle at 35% 35%, #ff9a6b, #c2421f); box-shadow: 0 0 10rpx rgba(255, 110, 70, 0.7); }
+.p5 { width: 34rpx; height: 34rpx; background: radial-gradient(circle at 35% 35%, #f0d2a0, #c08a4e); box-shadow: 0 0 14rpx rgba(230, 190, 130, 0.6); }
+.p6 { width: 28rpx; height: 28rpx; background: radial-gradient(circle at 35% 35%, #f3e0b0, #cba868); box-shadow: 0 0 12rpx rgba(230, 200, 130, 0.6); }
+.p7 { width: 22rpx; height: 22rpx; background: radial-gradient(circle at 35% 35%, #c4f4f4, #6fc6d4); box-shadow: 0 0 12rpx rgba(150, 230, 230, 0.7); }
+.p8 { width: 22rpx; height: 22rpx; background: radial-gradient(circle at 35% 35%, #8aa0ff, #3f57c8); box-shadow: 0 0 12rpx rgba(110, 140, 255, 0.8); }
+.p9 { width: 11rpx; height: 11rpx; background: radial-gradient(circle at 35% 35%, #d6c4b4, #998678); box-shadow: 0 0 6rpx rgba(210, 190, 170, 0.6); }
+
+/* 土星环 */
+.saturn-ring {
   position: absolute;
-  top: 32%;
+  top: 50%;
   left: 50%;
-  width: 460rpx;
-  height: 460rpx;
-  margin: -230rpx 0 0 -230rpx;
-  perspective: 900rpx;
-}
-
-.sphere-tilt {
-  width: 100%;
-  height: 100%;
-  transform: rotateX(-12deg);
-  transform-style: preserve-3d;
-}
-
-.sphere {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: spinY 38s linear infinite;
-}
-
-.meridian {
-  position: absolute;
-  inset: 0;
-  border: 1rpx solid rgba(140, 180, 255, 0.22);
+  width: 56rpx;
+  height: 56rpx;
+  border: 3rpx solid rgba(230, 205, 150, 0.55);
   border-radius: 50%;
+  transform: translate(-50%, -50%) rotateX(72deg);
 }
 
-@for $i from 1 through 8 {
-  .meridian:nth-child(#{$i}) {
-    transform: rotateY(#{($i - 1) * 22.5}deg);
-  }
-}
-
-.equator {
-  position: absolute;
-  inset: 0;
-  border: 1rpx solid rgba(122, 162, 255, 0.3);
-  border-radius: 50%;
-  transform: rotateX(90deg);
-}
-
-@keyframes spinY {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-/* ---------- 前景输入 ---------- */
+/* ============ 前景 ============ */
 .container {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
-  padding: 0 40rpx 80rpx;
+  padding: 70rpx 44rpx 70rpx;
   box-sizing: border-box;
 }
 
+.brand {
+  text-align: center;
+}
+
+.brand-en {
+  font-size: 22rpx;
+  letter-spacing: 14rpx;
+  color: rgba(160, 180, 255, 0.5);
+  margin-bottom: 18rpx;
+  padding-left: 14rpx;
+}
+
 .title {
-  margin-top: 120rpx;
-  font-size: 60rpx;
-  font-weight: 600;
+  font-size: 74rpx;
+  font-weight: 700;
   letter-spacing: 8rpx;
-  color: #eaf0ff;
-  text-shadow: 0 0 24rpx rgba(122, 162, 255, 0.5);
+  background: linear-gradient(110deg, #ffffff 0%, #a9c0ff 35%, #d4a9ff 65%, #ffffff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 
 .subtitle {
-  margin-top: 12rpx;
-  margin-bottom: 60rpx;
+  margin-top: 16rpx;
   font-size: 26rpx;
-  letter-spacing: 12rpx;
-  color: rgba(200, 215, 255, 0.6);
+  letter-spacing: 16rpx;
+  color: rgba(200, 215, 255, 0.55);
+  padding-left: 16rpx;
 }
 
 .panel {
-  width: 100%;
   margin-top: auto;
-  padding: 40rpx 36rpx 12rpx;
-  border-radius: 28rpx;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1rpx solid rgba(160, 190, 255, 0.18);
-  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(12rpx);
+  padding: 40rpx 36rpx 16rpx;
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1rpx solid rgba(170, 195, 255, 0.18);
+  box-shadow: 0 10rpx 50rpx rgba(0, 0, 0, 0.4), inset 0 1rpx 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16rpx);
 }
 
-.section {
-  margin-bottom: 36rpx;
+.field {
+  margin-bottom: 34rpx;
 }
 
-.section-header {
-  font-size: 28rpx;
-  color: rgba(210, 222, 255, 0.7);
+.field-label {
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  color: rgba(200, 215, 255, 0.6);
   margin-bottom: 18rpx;
 }
 
-.gender-selector {
+/* 性别分段开关 */
+.segment {
+  position: relative;
   display: flex;
-  gap: 60rpx;
-}
-
-.radio-label {
-  font-size: 30rpx;
-  color: #eaf0ff;
-}
-
-.picker {
-  padding: 22rpx 24rpx;
-  border-radius: 16rpx;
+  height: 84rpx;
+  padding: 6rpx;
+  border-radius: 22rpx;
   background: rgba(255, 255, 255, 0.05);
-  border: 1rpx solid rgba(160, 190, 255, 0.2);
+  border: 1rpx solid rgba(170, 195, 255, 0.16);
+}
+
+.seg-thumb {
+  position: absolute;
+  top: 6rpx;
+  left: 6rpx;
+  width: calc(50% - 6rpx);
+  height: calc(100% - 12rpx);
+  border-radius: 18rpx;
+  background: linear-gradient(135deg, #6a8dff, #9a7bff);
+  box-shadow: 0 4rpx 16rpx rgba(106, 141, 255, 0.5);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.seg-thumb.right {
+  transform: translateX(100%);
+}
+
+.seg-item {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  letter-spacing: 4rpx;
+  color: rgba(210, 222, 255, 0.65);
+  transition: color 0.28s ease;
+}
+
+.seg-item.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 日期/时间字段 */
+.field-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84rpx;
+  padding: 0 28rpx;
+  border-radius: 22rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1rpx solid rgba(170, 195, 255, 0.16);
   color: #eaf0ff;
   font-size: 30rpx;
 }
 
-.primary-button {
-  width: 100%;
-  margin-top: 50rpx;
-  padding: 6rpx 0;
-  height: 92rpx;
-  line-height: 92rpx;
-  border: none;
-  border-radius: 46rpx;
-  font-size: 32rpx;
-  letter-spacing: 4rpx;
-  color: #fff;
-  background: linear-gradient(135deg, #6a8dff 0%, #9a7bff 100%);
-  box-shadow: 0 8rpx 28rpx rgba(106, 141, 255, 0.45);
+.chevron {
+  font-size: 40rpx;
+  color: rgba(170, 195, 255, 0.5);
+  transform: rotate(90deg);
 }
 
-.primary-button::after {
+/* CTA 按钮 */
+.cta {
+  position: relative;
+  margin-top: 54rpx;
+  height: 100rpx;
+  line-height: 100rpx;
   border: none;
+  border-radius: 50rpx;
+  background: linear-gradient(135deg, #6a8dff 0%, #8a6cff 50%, #b06cff 100%);
+  box-shadow: 0 10rpx 36rpx rgba(120, 110, 255, 0.5), inset 0 1rpx 0 rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  transition: transform 0.18s ease;
+}
+
+.cta::after {
+  border: none;
+}
+
+.cta-hover {
+  transform: scale(0.97);
+}
+
+.cta-text {
+  font-size: 34rpx;
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  color: #fff;
+  padding-left: 8rpx;
 }

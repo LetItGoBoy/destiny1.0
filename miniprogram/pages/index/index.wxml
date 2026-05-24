@@ -1,6 +1,10 @@
 <view class="page">
-  <!-- 3D 星盘背景层（不参与交互） -->
+  <!-- 背景：极光 + 星点 + 太阳系（不参与交互） -->
   <view class="cosmos">
+    <view class="aurora a1"></view>
+    <view class="aurora a2"></view>
+    <view class="aurora a3"></view>
+
     <view
       class="star"
       wx:for="{{stars}}"
@@ -8,64 +12,66 @@
       style="top:{{item.top}}%;left:{{item.left}}%;width:{{item.size}}rpx;height:{{item.size}}rpx;animation-delay:{{item.delay}}s;animation-duration:{{item.duration}}s;"
     ></view>
 
-    <view class="orbit-system">
-      <view class="orbit orbit-1"></view>
-      <view class="orbit orbit-2">
-        <view class="planet"></view>
-      </view>
-      <view class="orbit orbit-3"></view>
-    </view>
-
-    <view class="sphere-scene">
-      <view class="sphere-tilt">
-        <view class="sphere">
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="equator"></view>
+    <view class="solar">
+      <view class="sun-halo"></view>
+      <view class="sun"></view>
+      <view class="system">
+        <view class="orbit o1"><view class="planet p1"></view></view>
+        <view class="orbit o2"><view class="planet p2"></view></view>
+        <view class="orbit o3"><view class="planet p3"></view></view>
+        <view class="orbit o4"><view class="planet p4"></view></view>
+        <view class="orbit o5"><view class="planet p5"></view></view>
+        <view class="orbit o6">
+          <view class="planet p6"><view class="saturn-ring"></view></view>
         </view>
+        <view class="orbit o7"><view class="planet p7"></view></view>
+        <view class="orbit o8"><view class="planet p8"></view></view>
+        <view class="orbit o9"><view class="planet p9"></view></view>
       </view>
     </view>
   </view>
 
-  <!-- 前景输入 -->
+  <!-- 前景 -->
   <view class="container">
-    <view class="title">同乐命理</view>
-    <view class="subtitle">八字排盘</view>
+    <view class="brand">
+      <view class="brand-en">D E S T I N Y</view>
+      <view class="title">同乐命理</view>
+      <view class="subtitle">八 字 排 盘</view>
+    </view>
 
     <view class="panel">
-      <view class="section">
-        <view class="section-header">选择性别</view>
-        <radio-group class="gender-selector" bindchange="onGenderChange">
-          <label class="radio-label">
-            <radio value="male" checked="true" color="#7aa2ff"/> 男
-          </label>
-          <label class="radio-label">
-            <radio value="female" color="#7aa2ff"/> 女
-          </label>
-        </radio-group>
+      <view class="field">
+        <view class="field-label">性别</view>
+        <view class="segment">
+          <view class="seg-thumb {{gender === 'female' ? 'right' : ''}}"></view>
+          <view class="seg-item {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
+          <view class="seg-item {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
+        </view>
       </view>
 
-      <view class="section">
-        <view class="section-header">选择出生日期</view>
+      <view class="field">
+        <view class="field-label">出生日期</view>
         <picker mode="date" bindchange="onDateChange" value="{{date}}">
-          <view class="picker">{{date}}</view>
+          <view class="field-value">
+            <text>{{date}}</text>
+            <text class="chevron">›</text>
+          </view>
         </picker>
       </view>
 
-      <view class="section">
-        <view class="section-header">选择出生时间</view>
+      <view class="field">
+        <view class="field-label">出生时间</view>
         <picker mode="time" bindchange="onTimeChange" value="{{time}}">
-          <view class="picker">{{time}}</view>
+          <view class="field-value">
+            <text>{{time}}</text>
+            <text class="chevron">›</text>
+          </view>
         </picker>
       </view>
     </view>
 
-    <button class="primary-button" bindtap="onStartPaipan">开始排盘</button>
+    <button class="cta" bindtap="onStartPaipan" hover-class="cta-hover">
+      <text class="cta-text">开 始 排 盘</text>
+    </button>
   </view>
 </view>
