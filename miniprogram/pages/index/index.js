@@ -13,7 +13,7 @@ Page({
 
   onLoad() {
     const stars = [];
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < 26; i++) {
       stars.push({
         id: i,
         top:      +(Math.random() * 100).toFixed(2),

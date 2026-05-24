@@ -73,76 +73,107 @@ page {
   50%       { opacity: 0.95; transform: scale(1.2); }
 }
 
-/* ===== 太阳系 ===== */
+/* ===== 3D 星球（浑天仪式） ===== */
 .solar {
   position: absolute;
-  top: 27%;
+  top: 28%;
   left: 50%;
   width: 0;
   height: 0;
-}
-
-.sun {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 72rpx;
-  height: 72rpx;
-  margin: -36rpx 0 0 -36rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff8e0 0%, #ffcf6b 40%, #ff8a3c 100%);
-  box-shadow: 0 0 38rpx 10rpx rgba(255, 170, 80, 0.75),
-              0 0 90rpx 28rpx rgba(255, 120, 50, 0.3);
-  animation: sunPulse 4s ease-in-out infinite;
+  perspective: 1200rpx;
 }
 
 .sun-halo {
   position: absolute;
   top: 0;
   left: 0;
-  width: 230rpx;
-  height: 230rpx;
-  margin: -115rpx 0 0 -115rpx;
+  width: 300rpx;
+  height: 300rpx;
+  margin: -150rpx 0 0 -150rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 160, 70, 0.32) 0%, rgba(255, 120, 50, 0) 70%);
+  background: radial-gradient(circle, rgba(255, 160, 70, 0.3) 0%, rgba(255, 120, 50, 0) 70%);
   animation: haloPulse 4s ease-in-out infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.6; }
+  50%       { transform: scale(1.25); opacity: 1; }
+}
+
+.orrery-tilt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateX(-12deg);
+  transform-style: preserve-3d;
+}
+
+/* 整个星球绕 Y 轴自转——这是 3D 感的关键 */
+.orrery {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  animation: orrerySpin 30s linear infinite;
+}
+
+@keyframes orrerySpin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+.sun {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 76rpx;
+  height: 76rpx;
+  margin: -38rpx 0 0 -38rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff8e0 0%, #ffcf6b 40%, #ff8a3c 100%);
+  box-shadow: 0 0 40rpx 12rpx rgba(255, 170, 80, 0.8),
+              0 0 100rpx 32rpx rgba(255, 120, 50, 0.35);
+  animation: sunPulse 4s ease-in-out infinite;
 }
 
 @keyframes sunPulse {
   0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.09); }
+  50%       { transform: scale(1.1); }
 }
 
-@keyframes haloPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.65; }
-  50%       { transform: scale(1.28); opacity: 1; }
-}
-
-.system {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  transform-style: preserve-3d;
-  transform: rotateX(45deg);
-}
-
+/* 每条轨道是一个独立朝向的 3D 平面，交织成球壳 */
 .orbit {
   position: absolute;
   top: 0;
   left: 0;
-  border: 1rpx solid rgba(150, 180, 255, 0.15);
-  border-radius: 50%;
   transform-style: preserve-3d;
-  animation-name: spin;
+}
+
+.track {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1rpx solid rgba(150, 180, 255, 0.22);
+  border-radius: 50%;
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  animation-name: revolve;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
 
-@keyframes spin {
-  from { transform: translate(-50%, -50%) rotateZ(0deg); }
-  to   { transform: translate(-50%, -50%) rotateZ(360deg); }
+@keyframes revolve {
+  from { transform: rotateZ(0deg); }
+  to   { transform: rotateZ(360deg); }
 }
 
 .planet {
@@ -150,41 +181,40 @@ page {
   top: 0;
   left: 50%;
   border-radius: 50%;
-  transform: translate(-50%, -50%) rotateX(-45deg);
 }
 
-/* 轨道大小 + 公转速度 */
-.o1 { width: 160rpx;  height: 160rpx;  animation-duration: 7s; }
-.o2 { width: 240rpx;  height: 240rpx;  animation-duration: 11s; }
-.o3 { width: 330rpx;  height: 330rpx;  animation-duration: 16s; }
-.o4 { width: 420rpx;  height: 420rpx;  animation-duration: 22s; }
-.o5 { width: 530rpx;  height: 530rpx;  animation-duration: 30s; }
-.o6 { width: 650rpx;  height: 650rpx;  animation-duration: 40s; }
-.o7 { width: 760rpx;  height: 760rpx;  animation-duration: 52s; }
-.o8 { width: 848rpx;  height: 848rpx;  animation-duration: 64s; }
-.o9 { width: 916rpx;  height: 916rpx;  animation-duration: 78s; }
+/* 9 条轨道：不同朝向 + 大小，编织成球 */
+.ob1 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(0deg); }
+.ob2 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(51deg); }
+.ob3 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(102deg); }
+.ob4 { width: 460rpx; height: 460rpx; margin: -230rpx 0 0 -230rpx; transform: rotateX(78deg) rotateY(153deg); }
+.ob5 { width: 510rpx; height: 510rpx; margin: -255rpx 0 0 -255rpx; transform: rotateX(32deg) rotateY(20deg); }
+.ob6 { width: 420rpx; height: 420rpx; margin: -210rpx 0 0 -210rpx; transform: rotateX(60deg) rotateY(80deg); }
+.ob7 { width: 540rpx; height: 540rpx; margin: -270rpx 0 0 -270rpx; transform: rotateX(85deg) rotateY(40deg); }
+.ob8 { width: 480rpx; height: 480rpx; margin: -240rpx 0 0 -240rpx; transform: rotateX(70deg) rotateY(125deg); }
+.ob9 { width: 500rpx; height: 500rpx; margin: -250rpx 0 0 -250rpx; transform: rotateX(50deg) rotateY(150deg); }
 
-/* 水 金 地 火 木 土 天 海 冥 */
-.p1 { width: 12rpx; height: 12rpx; background: radial-gradient(circle at 35% 35%, #d8cab0, #9a8a72); box-shadow: 0 0 8rpx rgba(216, 202, 176, 0.8); }
-.p2 { width: 18rpx; height: 18rpx; background: radial-gradient(circle at 35% 35%, #ffe2a8, #d99b52); box-shadow: 0 0 10rpx rgba(255, 200, 120, 0.8); }
-.p3 { width: 20rpx; height: 20rpx; background: radial-gradient(circle at 35% 35%, #7ec8ff, #2a6fc4); box-shadow: 0 0 12rpx rgba(90, 160, 255, 0.9); }
-.p4 { width: 16rpx; height: 16rpx; background: radial-gradient(circle at 35% 35%, #ff9a6b, #c2421f); box-shadow: 0 0 10rpx rgba(255, 110, 70, 0.8); }
-.p5 { width: 34rpx; height: 34rpx; background: radial-gradient(circle at 35% 35%, #f0d2a0, #c08a4e); box-shadow: 0 0 14rpx rgba(230, 190, 130, 0.7); }
-.p6 { width: 28rpx; height: 28rpx; background: radial-gradient(circle at 35% 35%, #f3e0b0, #cba868); box-shadow: 0 0 12rpx rgba(230, 200, 130, 0.7); }
-.p7 { width: 22rpx; height: 22rpx; background: radial-gradient(circle at 35% 35%, #c4f4f4, #6fc6d4); box-shadow: 0 0 12rpx rgba(150, 230, 230, 0.8); }
-.p8 { width: 22rpx; height: 22rpx; background: radial-gradient(circle at 35% 35%, #8aa0ff, #3f57c8); box-shadow: 0 0 12rpx rgba(110, 140, 255, 0.9); }
-.p9 { width: 10rpx; height: 10rpx; background: radial-gradient(circle at 35% 35%, #d6c4b4, #998678); box-shadow: 0 0 6rpx rgba(210, 190, 170, 0.7); }
+/* 公转速度 */
+.ob1 .spinner { animation-duration: 14s; }
+.ob2 .spinner { animation-duration: 18s; }
+.ob3 .spinner { animation-duration: 12s; }
+.ob4 .spinner { animation-duration: 20s; }
+.ob5 .spinner { animation-duration: 16s; }
+.ob6 .spinner { animation-duration: 22s; }
+.ob7 .spinner { animation-duration: 26s; }
+.ob8 .spinner { animation-duration: 19s; }
+.ob9 .spinner { animation-duration: 24s; }
 
-.saturn-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 56rpx;
-  height: 56rpx;
-  border: 3rpx solid rgba(230, 205, 150, 0.55);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotateX(72deg);
-}
+/* 行星：水 金 地 火 木 土 天 海 冥 */
+.p1 { width: 12rpx; height: 12rpx; margin: -6rpx 0 0 -6rpx;   background: radial-gradient(circle at 35% 35%, #d8cab0, #9a8a72); box-shadow: 0 0 8rpx rgba(216, 202, 176, 0.8); }
+.p2 { width: 18rpx; height: 18rpx; margin: -9rpx 0 0 -9rpx;   background: radial-gradient(circle at 35% 35%, #ffe2a8, #d99b52); box-shadow: 0 0 12rpx rgba(255, 200, 120, 0.9); }
+.p3 { width: 20rpx; height: 20rpx; margin: -10rpx 0 0 -10rpx; background: radial-gradient(circle at 35% 35%, #7ec8ff, #2a6fc4); box-shadow: 0 0 14rpx rgba(90, 160, 255, 1); }
+.p4 { width: 16rpx; height: 16rpx; margin: -8rpx 0 0 -8rpx;   background: radial-gradient(circle at 35% 35%, #ff9a6b, #c2421f); box-shadow: 0 0 12rpx rgba(255, 110, 70, 0.9); }
+.p5 { width: 34rpx; height: 34rpx; margin: -17rpx 0 0 -17rpx; background: radial-gradient(circle at 35% 35%, #f0d2a0, #c08a4e); box-shadow: 0 0 16rpx rgba(230, 190, 130, 0.8); }
+.p6 { width: 28rpx; height: 28rpx; margin: -14rpx 0 0 -14rpx; background: radial-gradient(circle at 35% 35%, #f3e0b0, #cba868); box-shadow: 0 0 14rpx rgba(230, 200, 130, 0.8); }
+.p7 { width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx; background: radial-gradient(circle at 35% 35%, #c4f4f4, #6fc6d4); box-shadow: 0 0 14rpx rgba(150, 230, 230, 0.9); }
+.p8 { width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx; background: radial-gradient(circle at 35% 35%, #8aa0ff, #3f57c8); box-shadow: 0 0 14rpx rgba(110, 140, 255, 1); }
+.p9 { width: 12rpx; height: 12rpx; margin: -6rpx 0 0 -6rpx;   background: radial-gradient(circle at 35% 35%, #d6c4b4, #998678); box-shadow: 0 0 8rpx rgba(210, 190, 170, 0.8); }
 
 /* ===== 前景 ===== */
 .container {
