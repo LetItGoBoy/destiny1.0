@@ -1,5 +1,5 @@
 <view class="page">
-  <!-- 背景：极光 + 星点 + 太阳系（不参与交互） -->
+  <!-- 背景层 -->
   <view class="cosmos">
     <view class="aurora a1"></view>
     <view class="aurora a2"></view>
@@ -40,15 +40,38 @@
     </view>
 
     <view class="panel">
+      <!-- 姓名 -->
       <view class="field">
-        <view class="field-label">性别</view>
-        <view class="segment">
-          <view class="seg-thumb {{gender === 'female' ? 'right' : ''}}"></view>
-          <view class="seg-item {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
-          <view class="seg-item {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
+        <input
+          class="text-input"
+          placeholder="请输入姓名（选填）"
+          placeholder-class="input-ph"
+          bindinput="onNameInput"
+          value="{{name}}"
+        />
+      </view>
+
+      <!-- 性别 + 历法 -->
+      <view class="field row-fields">
+        <view class="half-field">
+          <view class="field-label">性别</view>
+          <view class="segment">
+            <view class="seg-thumb {{gender === 'female' ? 'slide-right' : ''}}"></view>
+            <view class="seg-item {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
+            <view class="seg-item {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
+          </view>
+        </view>
+        <view class="half-field">
+          <view class="field-label">历法</view>
+          <view class="segment">
+            <view class="seg-thumb {{calendarType === 'lunar' ? 'slide-right' : ''}}"></view>
+            <view class="seg-item {{calendarType === 'solar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="solar">公历</view>
+            <view class="seg-item {{calendarType === 'lunar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="lunar">农历</view>
+          </view>
         </view>
       </view>
 
+      <!-- 出生日期 -->
       <view class="field">
         <view class="field-label">出生日期</view>
         <picker mode="date" bindchange="onDateChange" value="{{date}}">
@@ -59,6 +82,7 @@
         </picker>
       </view>
 
+      <!-- 出生时间 -->
       <view class="field">
         <view class="field-label">出生时间</view>
         <picker mode="time" bindchange="onTimeChange" value="{{time}}">
@@ -67,6 +91,30 @@
             <text class="chevron">›</text>
           </view>
         </picker>
+      </view>
+
+      <!-- 出生地 -->
+      <view class="field">
+        <view class="field-label">出生地 <text class="tag-opt">选填</text></view>
+        <input
+          class="text-input"
+          placeholder="省 / 市（用于真太阳时校正）"
+          placeholder-class="input-ph"
+          bindinput="onLocationInput"
+          value="{{location}}"
+        />
+      </view>
+
+      <!-- 开关行 -->
+      <view class="field toggle-row">
+        <view class="toggle-cell">
+          <text class="toggle-label">真太阳时</text>
+          <switch checked="{{isTrueSolarTime}}" bindchange="onTrueSolarTimeChange" color="#7aa2ff"/>
+        </view>
+        <view class="toggle-cell">
+          <text class="toggle-label">保存记录</text>
+          <switch checked="{{saveToRecord}}" bindchange="onSaveToRecordChange" color="#7aa2ff"/>
+        </view>
       </view>
     </view>
 
