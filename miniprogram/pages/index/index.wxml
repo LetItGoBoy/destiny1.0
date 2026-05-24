@@ -19,14 +19,14 @@
     <view class="sphere-scene">
       <view class="sphere-tilt">
         <view class="sphere">
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
-          <view class="meridian"></view>
+          <view class="meridian m1"></view>
+          <view class="meridian m2"></view>
+          <view class="meridian m3"></view>
+          <view class="meridian m4"></view>
+          <view class="meridian m5"></view>
+          <view class="meridian m6"></view>
+          <view class="meridian m7"></view>
+          <view class="meridian m8"></view>
           <view class="equator"></view>
         </view>
       </view>
