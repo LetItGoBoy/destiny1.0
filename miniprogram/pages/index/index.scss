@@ -1,43 +1,231 @@
+page {
+  background: radial-gradient(ellipse at 50% 30%, #1a2150 0%, #0a0e27 55%, #05070f 100%);
+  min-height: 100vh;
+}
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---------- 3D 背景层 ---------- */
+.cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.4;
+  animation-name: twinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50%      { opacity: 0.9;  transform: scale(1.1); }
+}
+
+/* 轨道线 */
+.orbit-system {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1rpx solid rgba(122, 162, 255, 0.18);
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+.orbit-1 {
+  width: 640rpx;
+  height: 640rpx;
+  margin: -320rpx 0 0 -320rpx;
+  animation: orbitSpin 26s linear infinite;
+}
+
+.orbit-2 {
+  width: 820rpx;
+  height: 820rpx;
+  margin: -410rpx 0 0 -410rpx;
+  border-color: rgba(122, 162, 255, 0.12);
+  animation: orbitSpin 40s linear infinite reverse;
+}
+
+.orbit-3 {
+  width: 980rpx;
+  height: 980rpx;
+  margin: -490rpx 0 0 -490rpx;
+  border-color: rgba(160, 130, 255, 0.1);
+  animation: orbitSpin 58s linear infinite;
+}
+
+.planet {
+  position: absolute;
+  top: -7rpx;
+  left: 50%;
+  width: 14rpx;
+  height: 14rpx;
+  margin-left: -7rpx;
+  border-radius: 50%;
+  background: #9ec3ff;
+  box-shadow: 0 0 16rpx 4rpx rgba(122, 162, 255, 0.8);
+}
+
+@keyframes orbitSpin {
+  from { transform: rotateX(72deg) rotateZ(0deg); }
+  to   { transform: rotateX(72deg) rotateZ(360deg); }
+}
+
+/* 线框天球 */
+.sphere-scene {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  width: 460rpx;
+  height: 460rpx;
+  margin: -230rpx 0 0 -230rpx;
+  perspective: 900rpx;
+}
+
+.sphere-tilt {
+  width: 100%;
+  height: 100%;
+  transform: rotateX(-12deg);
+  transform-style: preserve-3d;
+}
+
+.sphere {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: spinY 38s linear infinite;
+}
+
+.meridian {
+  position: absolute;
+  inset: 0;
+  border: 1rpx solid rgba(140, 180, 255, 0.22);
+  border-radius: 50%;
+}
+
+@for $i from 1 through 8 {
+  .meridian:nth-child(#{$i}) {
+    transform: rotateY(#{($i - 1) * 22.5}deg);
+  }
+}
+
+.equator {
+  position: absolute;
+  inset: 0;
+  border: 1rpx solid rgba(122, 162, 255, 0.3);
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+
+@keyframes spinY {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+/* ---------- 前景输入 ---------- */
 .container {
-    padding: 20px;
-  }
-  
-  .title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .section {
-    margin-bottom: 20px;
-  }
-  
-  .section-header {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .gender-selector {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .radio-label {
-    font-size: 16px;
-  }
-  
-  .picker {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .primary-button {
-    width: 100%;
-    background-color: #1AAD19;
-    color: white;
-    padding: 10px;
-    border: none;
-  }
-  
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 40rpx 80rpx;
+  box-sizing: border-box;
+}
+
+.title {
+  margin-top: 120rpx;
+  font-size: 60rpx;
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  color: #eaf0ff;
+  text-shadow: 0 0 24rpx rgba(122, 162, 255, 0.5);
+}
+
+.subtitle {
+  margin-top: 12rpx;
+  margin-bottom: 60rpx;
+  font-size: 26rpx;
+  letter-spacing: 12rpx;
+  color: rgba(200, 215, 255, 0.6);
+}
+
+.panel {
+  width: 100%;
+  margin-top: auto;
+  padding: 40rpx 36rpx 12rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(160, 190, 255, 0.18);
+  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12rpx);
+}
+
+.section {
+  margin-bottom: 36rpx;
+}
+
+.section-header {
+  font-size: 28rpx;
+  color: rgba(210, 222, 255, 0.7);
+  margin-bottom: 18rpx;
+}
+
+.gender-selector {
+  display: flex;
+  gap: 60rpx;
+}
+
+.radio-label {
+  font-size: 30rpx;
+  color: #eaf0ff;
+}
+
+.picker {
+  padding: 22rpx 24rpx;
+  border-radius: 16rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1rpx solid rgba(160, 190, 255, 0.2);
+  color: #eaf0ff;
+  font-size: 30rpx;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 50rpx;
+  padding: 6rpx 0;
+  height: 92rpx;
+  line-height: 92rpx;
+  border: none;
+  border-radius: 46rpx;
+  font-size: 32rpx;
+  letter-spacing: 4rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #6a8dff 0%, #9a7bff 100%);
+  box-shadow: 0 8rpx 28rpx rgba(106, 141, 255, 0.45);
+}
+
+.primary-button::after {
+  border: none;
+}

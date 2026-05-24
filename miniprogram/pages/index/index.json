@@ -1,4 +1,8 @@
 {
-  "usingComponents": {
-  }
+  "usingComponents": {},
+  "navigationBarBackgroundColor": "#0a0e27",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "同乐命理",
+  "backgroundColor": "#0a0e27",
+  "backgroundColorTop": "#0a0e27"
 }
