@@ -2,7 +2,22 @@ Page({
     data: {
       gender: 'male', // 默认性别
       date: '请选择日期', // 初始日期提示文字
-      time: '请选择时间' // 初始时间提示文字
+      time: '请选择时间', // 初始时间提示文字
+      stars: [] // 背景漂浮星点
+    },
+    onLoad() {
+      const stars = [];
+      for (let i = 0; i < 42; i++) {
+        stars.push({
+          id: i,
+          top: +(Math.random() * 100).toFixed(2),
+          left: +(Math.random() * 100).toFixed(2),
+          size: +(Math.random() * 4 + 2).toFixed(1),
+          delay: +(Math.random() * 4).toFixed(2),
+          duration: +(Math.random() * 3 + 3).toFixed(2)
+        });
+      }
+      this.setData({ stars });
     },
     onGenderChange(event) {
       this.setData({
