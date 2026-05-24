@@ -14,19 +14,19 @@
 
     <view class="solar">
       <view class="sun-halo"></view>
-      <view class="sun"></view>
-      <view class="system">
-        <view class="orbit o1"><view class="planet p1"></view></view>
-        <view class="orbit o2"><view class="planet p2"></view></view>
-        <view class="orbit o3"><view class="planet p3"></view></view>
-        <view class="orbit o4"><view class="planet p4"></view></view>
-        <view class="orbit o5"><view class="planet p5"></view></view>
-        <view class="orbit o6">
-          <view class="planet p6"><view class="saturn-ring"></view></view>
+      <view class="orrery-tilt">
+        <view class="orrery">
+          <view class="sun"></view>
+          <view class="orbit ob1"><view class="track"></view><view class="spinner"><view class="planet p1"></view></view></view>
+          <view class="orbit ob2"><view class="track"></view><view class="spinner"><view class="planet p2"></view></view></view>
+          <view class="orbit ob3"><view class="track"></view><view class="spinner"><view class="planet p3"></view></view></view>
+          <view class="orbit ob4"><view class="track"></view><view class="spinner"><view class="planet p4"></view></view></view>
+          <view class="orbit ob5"><view class="track"></view><view class="spinner"><view class="planet p5"></view></view></view>
+          <view class="orbit ob6"><view class="track"></view><view class="spinner"><view class="planet p6"></view></view></view>
+          <view class="orbit ob7"><view class="track"></view><view class="spinner"><view class="planet p7"></view></view></view>
+          <view class="orbit ob8"><view class="track"></view><view class="spinner"><view class="planet p8"></view></view></view>
+          <view class="orbit ob9"><view class="track"></view><view class="spinner"><view class="planet p9"></view></view></view>
         </view>
-        <view class="orbit o7"><view class="planet p7"></view></view>
-        <view class="orbit o8"><view class="planet p8"></view></view>
-        <view class="orbit o9"><view class="planet p9"></view></view>
       </view>
     </view>
   </view>
