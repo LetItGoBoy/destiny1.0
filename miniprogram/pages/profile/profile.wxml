@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="card user">
+    <view class="avatar">问</view>
+    <view class="uinfo">
+      <view class="uname">问真用户</view>
+      <view class="udesc">已保存 {{count}} 条记录</view>
+    </view>
+  </view>
+
+  <view class="card menu">
+    <view class="item" bindtap="about">
+      <text>关于问真</text>
+      <text class="chev">›</text>
+    </view>
+    <view class="item" bindtap="clearCache">
+      <text>清除本地数据</text>
+      <text class="chev">›</text>
+    </view>
+  </view>
+
+  <view class="tip">无会员 · 无付费解锁 · 仅核心排盘工具</view>
+</view>

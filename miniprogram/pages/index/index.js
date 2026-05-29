@@ -59,8 +59,10 @@ Page({
       hour,
       gender
     })
+    const labels = ['年', '月', '日', '时']
+    const ps = [r.yearPillar, r.monthPillar, r.dayPillar, r.hourPillar]
     this.setData({
-      preview: [r.yearPillar, r.monthPillar, r.dayPillar, r.hourPillar],
+      preview: ps.map((p, i) => Object.assign({ label: labels[i] }, p)),
       previewSolar: `公历：${date} ${time}`
     })
   },
@@ -70,9 +72,22 @@ Page({
       wx.showToast({ title: '请先选择日期和时间', icon: 'none' })
       return
     }
-    const { name, gender, calendarType, date, time, location, isTrueSolarTime, saveToRecord } = this.data
+    const { name, gender, calendarType, date, time, location, isTrueSolarTime, saveToRecord, preview } = this.data
+
+    if (saveToRecord) {
+      const records = wx.getStorageSync('records') || []
+      const baziStr = preview ? preview.map(p => p.stem + p.branch).join(' ') : ''
+      records.unshift({ id: Date.now(), name, gender, date, time, baziStr })
+      wx.setStorageSync('records', records)
+    }
+
     wx.navigateTo({
       url: `/pages/result/result?name=${encodeURIComponent(name)}&gender=${gender}&calendarType=${calendarType}&date=${date}&time=${time}&location=${location}&isTrueSolarTime=${isTrueSolarTime}&saveToRecord=${saveToRecord}`
     })
+  },
+
+  onMatch(e) {
+    const type = e.currentTarget.dataset.type
+    wx.navigateTo({ url: `/pages/match/match?type=${type}` })
   }
 })

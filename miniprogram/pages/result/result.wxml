@@ -99,9 +99,9 @@
     <template is="pillarTable" data="{{cols: cols, showShensha: true}}" />
   </view>
 
-  <!-- 专业细盘：四柱 + 大运 / 流年 / 流月 -->
+  <!-- 专业细盘：大运/流年 + 四柱，下接 大运 / 流年 / 流月 -->
   <view wx:if="{{activeTab=='detail'}}" class="tabpane">
-    <template is="pillarTable" data="{{cols: cols, showShensha: true}}" />
+    <template is="pillarTable" data="{{cols: detailCols, showShensha: true}}" />
 
     <view class="luck">
       <view class="luck-note">{{startLuckText}}　{{daYunForward?'顺行':'逆行'}}</view>
