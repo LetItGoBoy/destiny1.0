@@ -1,13 +1,36 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/records/records",
+    "pages/profile/profile",
     "pages/result/result",
+    "pages/match/match",
     "pages/baziCommentary/baziCommentary"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "问真排盘",
     "navigationBarBackgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#b07a2c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "排盘"
+      },
+      {
+        "pagePath": "pages/records/records",
+        "text": "记录"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",

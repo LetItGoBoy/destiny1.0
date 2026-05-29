@@ -76,15 +76,29 @@
 
   <!-- 即时起局预览 -->
   <view class="preview" wx:if="{{preview}}">
-    <view class="preview-head">即时起局</view>
     <view class="preview-pillars">
       <view class="pp-col" wx:for="{{preview}}" wx:key="stem">
         <text class="pp-gz {{item.stemClass}}">{{item.stem}}</text>
         <text class="pp-gz {{item.branchClass}}">{{item.branch}}</text>
+        <text class="preview-solar">{{item.label}}</text>
       </view>
     </view>
-    <view class="preview-solar">{{previewSolar}}</view>
+    <view class="preview-side">即时起局</view>
   </view>
 
   <button class="cta" bindtap="onStartPaipan" hover-class="cta-hover">开始排盘</button>
+
+  <!-- 功能入口 -->
+  <view class="tools">
+    <view class="tool-card" hover-class="tool-hover" bindtap="onMatch" data-type="love">
+      <view class="tool-icon">💕</view>
+      <view class="tool-name">姻缘配对</view>
+      <view class="tool-desc">两人八字合婚</view>
+    </view>
+    <view class="tool-card" hover-class="tool-hover" bindtap="onMatch" data-type="partner">
+      <view class="tool-icon">🤝</view>
+      <view class="tool-name">合伙配对</view>
+      <view class="tool-desc">合作伙伴相合</view>
+    </view>
+  </view>
 </view>

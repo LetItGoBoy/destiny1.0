@@ -10,6 +10,7 @@ Page({
 
     dayMaster: '',
     cols: [],          // 四柱：年/月/日/时
+    detailCols: [],    // 专业细盘：大运 + 流年 + 年/月/日/时
 
     startLuckText: '',
     daYunForward: true,
@@ -83,6 +84,7 @@ Page({
       selectedLiuNian: li,
       liuYue
     })
+    this.buildDetailCols(entry, liuNian[li])
   },
 
   onSelectLiuNian(e) {
@@ -91,5 +93,15 @@ Page({
     if (!entry) return
     const liuYue = bazi.calcLiuYue(entry.year, this.data.dayMaster)
     this.setData({ selectedLiuNian: index, liuYue })
+    this.buildDetailCols(this.data.daYun[this.data.selectedDaYun], entry)
+  },
+
+  // 专业细盘左侧两列：大运 + 流年，与四柱共用相同行结构
+  buildDetailCols(daYunEntry, liuNianEntry) {
+    const dm = this.data.dayMaster
+    const extra = []
+    if (daYunEntry) extra.push(bazi.buildGanZhiColumn(daYunEntry.stem, daYunEntry.branch, dm, '大运'))
+    if (liuNianEntry) extra.push(bazi.buildGanZhiColumn(liuNianEntry.stem, liuNianEntry.branch, dm, '流年'))
+    this.setData({ detailCols: extra.concat(this.data.cols) })
   }
 })

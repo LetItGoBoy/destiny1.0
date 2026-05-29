@@ -24,6 +24,10 @@ Mini program root: `miniprogram/`
 
 ## Feature Set
 
+### Bottom tabBar
+
+Text-only tabBar (no icon assets): **排盘 (index) · 记录 (records) · 我的 (profile)**.
+
 ### 排盘 (Input — `pages/index`)
 
 Input fields: 姓名（选填）· 性别 男/女 · 历法 公历/农历 · 出生日期 · 出生时间 ·
@@ -31,15 +35,31 @@ Input fields: 姓名（选填）· 性别 男/女 · 历法 公历/农历 · 出
 
 The input page shows an **即时起局** four-pillar preview (computed live from the
 current selection) but **does NOT** show the 大运 list. Tapping 开始排盘 navigates to
-the result page.
+the result page (and, when 保存记录 is on, writes the chart to `wx.storage` key
+`records`). Below the CTA are two function cards: **姻缘配对** and **合伙配对**, both
+routing to `pages/match` with a `type` query (`love` / `partner`).
+
+### 记录 (`pages/records`) / 我的 (`pages/profile`)
+
+`records` lists saved charts from `wx.storage` (`records` key) — tap to re-open the
+result page, swipe-free 删除 with confirm. `profile` shows record count, 关于, and
+清除本地数据.
+
+### 配对 (`pages/match`)
+
+Collects two birth inputs and calls `bazi.compat(a, b, type)`. Compatibility score is
+derived from day-master ten-god relation, 天干五合, 日支/年支 六合/六冲. Returns a
+0–100 score, a level label, and human-readable notes.娱乐参考性质。
 
 ### 结果页 (Result — `pages/result`)
 
 Four top tabs: **基本信息 · 基本排盘 · 专业细盘 · 断事笔记**.
 
 - **基本排盘** — the four-pillar table only (no 大运 list).
-- **专业细盘** — the four-pillar table **plus** 大运 / 流年 / 流月 (horizontally
-  scrollable, tappable; selecting a 大运 loads its 流年, selecting a 流年 loads its 流月).
+- **专业细盘** — the four-pillar table with **two extra columns (大运 + 流年) prepended
+  to the left** (built via `buildGanZhiColumn`, sharing the same 主星/藏干/副星/星运/自坐
+  rows), **plus** scrollable 大运 / 流年 / 流月 selector rows below (tappable; selecting a
+  大运 loads its 流年, selecting a 流年 loads its 流月, and both update the left columns).
 
 Four-pillar table rows (top→bottom): 日期(柱名) · 主星 · 天干 · 地支 · 藏干 · 副星 ·
 星运 · 自坐 · 神煞.
@@ -89,6 +109,8 @@ Public API:
 | Export | Purpose |
 |---|---|
 | `paipan({year,month,day,hour,gender})` | Master entry. Returns the four pillars (each with stem/branch + element classes, 主星, 藏干 with 副星 ten-gods, 星运, 自坐, 神煞), `dayMaster`, `daYun` (8 steps), `daYunForward`, `startLuckText`. |
+| `buildGanZhiColumn(stem, branch, dayStem, label)` | Expands an arbitrary gan-zhi (大运/流年) into a column with the same row structure as a pillar (主星/藏干/副星/星运/自坐, empty 神煞). |
+| `compat(a, b, type)` | Two-chart compatibility (姻缘/合伙). Score from day-master ten-god, 天干五合, 日支/年支 六合/六冲. |
 | `calcLiuNian(daYunEntry, dayStem, birthYear)` | 10 流年 for a given 大运 (gan-zhi + 虚岁 + ten-god shorthand). |
 | `calcLiuYue(year, dayStem)` | 12 流月 for a 流年 (starts 立春/寅月 via 五虎遁). |
 | `tenGod`, `changSheng`, `classOf`, `ganZhiOfYear`, `solarTermDate` | Helpers. |

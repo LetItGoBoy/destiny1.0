@@ -1,0 +1,17 @@
+<view class="page">
+  <view wx:if="{{records.length === 0}}" class="empty">
+    <view class="empty-tip">还没有保存的记录</view>
+    <button class="empty-btn" bindtap="goPaipan">去排盘</button>
+  </view>
+
+  <view wx:else class="list">
+    <view class="rec" wx:for="{{records}}" wx:key="id" data-index="{{index}}" bindtap="onOpen">
+      <view class="rec-main">
+        <view class="rec-name">{{item.name || '未命名'}}<text class="rec-tag">{{item.gender === 'female' ? '女' : '男'}}</text></view>
+        <view class="rec-sub">{{item.date}} {{item.time}}</view>
+        <view class="rec-bazi">{{item.baziStr}}</view>
+      </view>
+      <view class="rec-del" catchtap="onDelete" data-index="{{index}}">删除</view>
+    </view>
+  </view>
+</view>

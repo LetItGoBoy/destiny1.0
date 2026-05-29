@@ -1,489 +1,209 @@
+/* 排盘输入页 — 简洁清爽风格，无动画、无宇宙背景 */
+
 page {
-  background: radial-gradient(ellipse at 50% 16%, #161d4a 0%, #0a0e27 50%, #04050d 100%);
-  min-height: 100vh;
-  font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  background: #f4f5f7;
 }
 
 .page {
-  position: relative;
   min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ===== 背景层 ===== */
-.cosmos {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.aurora {
-  position: absolute;
-  border-radius: 50%;
-  animation: drift 22s ease-in-out infinite;
-}
-
-.a1 {
-  width: 600rpx;
-  height: 600rpx;
-  top: -160rpx;
-  left: -140rpx;
-  background: radial-gradient(circle, rgba(122, 90, 248, 0.6) 0%, rgba(122, 90, 248, 0) 70%);
-}
-
-.a2 {
-  width: 680rpx;
-  height: 680rpx;
-  top: 100rpx;
-  right: -220rpx;
-  background: radial-gradient(circle, rgba(56, 132, 255, 0.55) 0%, rgba(56, 132, 255, 0) 70%);
-  animation-delay: -7s;
-}
-
-.a3 {
-  width: 520rpx;
-  height: 520rpx;
-  bottom: 60rpx;
-  left: -100rpx;
-  background: radial-gradient(circle, rgba(236, 96, 196, 0.4) 0%, rgba(236, 96, 196, 0) 70%);
-  animation-delay: -14s;
-}
-
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%       { transform: translate(40rpx, 28rpx) scale(1.1); }
-}
-
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: #fff;
-  animation-name: twinkle;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.1;  transform: scale(0.6); }
-  50%       { opacity: 0.95; transform: scale(1.2); }
-}
-
-/* ===== 实心 3D 星球 ===== */
-.stage {
-  position: absolute;
-  top: 26%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  perspective: 1400rpx;
-}
-
-/* 太阳大气晕 — 在 system 外层，不跟着旋转 */
-.sun-halo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 380rpx;
-  height: 380rpx;
-  margin: -190rpx 0 0 -190rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(255, 200, 100, 0.35) 0%,
-    rgba(255, 140, 50, 0.18) 45%,
-    rgba(255, 100, 30, 0) 70%);
-  animation: haloPulse 4s ease-in-out infinite;
-}
-
-@keyframes haloPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.7; }
-  50%       { transform: scale(1.22); opacity: 1; }
-}
-
-/* 整体系统绕 Y 轴缓慢自转，让行星前后穿插产生 3D 感 */
-.system {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-style: preserve-3d;
-  animation: systemSpin 48s linear infinite;
-}
-
-@keyframes systemSpin {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-/* ── 太阳：实心受光球体 ── */
-.sun {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100rpx;
-  height: 100rpx;
-  margin: -50rpx 0 0 -50rpx;
-  border-radius: 50%;
-  overflow: hidden;
-  background: radial-gradient(circle at 36% 32%,
-    #fffde0 0%,
-    #ffe080 20%,
-    #ffb830 50%,
-    #ff7a20 75%,
-    #e04800 100%);
-  box-shadow:
-    0 0 50rpx 16rpx rgba(255, 160, 60, 0.9),
-    0 0 130rpx 50rpx rgba(255, 100, 30, 0.4),
-    inset -14rpx -14rpx 30rpx rgba(180, 40, 0, 0.5);
-  animation: sunPulse 4s ease-in-out infinite;
-}
-
-/* 太阳表面滚动纹理 — 造成自转视觉 */
-.sun-spot {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  background: repeating-linear-gradient(
-    8deg,
-    rgba(255, 100, 0, 0) 0%,
-    rgba(255, 80, 0, 0.12) 12%,
-    rgba(220, 60, 0, 0.22) 22%,
-    rgba(255, 100, 0, 0) 34%
-  );
-  animation: surfaceSpin 12s linear infinite;
-}
-
-@keyframes sunPulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.07); }
-}
-
-@keyframes surfaceSpin {
-  from { transform: translateX(0); }
-  to   { transform: translateX(100rpx); }
-}
-
-/* ── 不可见轨道面（仅定义平面方向，无边框） ── */
-.orbit {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-style: preserve-3d;
-}
-
-.spin {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform-style: preserve-3d;
-  animation-name: revolve;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes revolve {
-  from { transform: rotateZ(0deg); }
-  to   { transform: rotateZ(360deg); }
-}
-
-/* ── 行星：实心受光球体（径向渐变 + 暗部阴影） ── */
-.planet {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  border-radius: 50%;
-}
-
-/* 轨道面方向（各不相同 → 立体分布）+ 轨道半径（margin = -size/2 居中，top:0 = 在轨道顶端） */
-.ob1 { width: 360rpx; height: 360rpx; margin: -180rpx 0 0 -180rpx; transform: rotateX(72deg) rotateY(0deg); }
-.ob2 { width: 300rpx; height: 300rpx; margin: -150rpx 0 0 -150rpx; transform: rotateX(55deg) rotateY(65deg); }
-.ob3 { width: 450rpx; height: 450rpx; margin: -225rpx 0 0 -225rpx; transform: rotateX(80deg) rotateY(128deg); }
-.ob4 { width: 340rpx; height: 340rpx; margin: -170rpx 0 0 -170rpx; transform: rotateX(38deg) rotateY(195deg); }
-.ob5 { width: 420rpx; height: 420rpx; margin: -210rpx 0 0 -210rpx; transform: rotateX(65deg) rotateY(42deg); }
-.ob6 { width: 500rpx; height: 500rpx; margin: -250rpx 0 0 -250rpx; transform: rotateX(82deg) rotateY(100deg); }
-
-/* 公转速度 */
-.ob1 .spin { animation-duration: 13s; }
-.ob2 .spin { animation-duration: 9s; }
-.ob3 .spin { animation-duration: 18s; }
-.ob4 .spin { animation-duration: 11s; }
-.ob5 .spin { animation-duration: 16s; }
-.ob6 .spin { animation-duration: 22s; }
-
-/* 每颗行星：径向渐变打光（亮点偏左上 = 受光面），inset 阴影 = 暗部/分界线，box-shadow = 大气辉光 */
-.p1 {
-  width: 22rpx; height: 22rpx; margin: -11rpx 0 0 -11rpx;
-  background: radial-gradient(circle at 32% 30%, #e8d5b0, #c0986a, #7a5230);
-  box-shadow: 0 0 10rpx 3rpx rgba(200, 150, 80, 0.7),
-              inset -4rpx -4rpx 8rpx rgba(40, 15, 0, 0.6);
-}
-
-.p2 {
-  width: 30rpx; height: 30rpx; margin: -15rpx 0 0 -15rpx;
-  background: radial-gradient(circle at 32% 30%, #ffe8c0, #e8a840, #9a6010);
-  box-shadow: 0 0 14rpx 4rpx rgba(255, 190, 80, 0.8),
-              inset -5rpx -5rpx 10rpx rgba(60, 20, 0, 0.55);
-}
-
-.p3 {
-  width: 34rpx; height: 34rpx; margin: -17rpx 0 0 -17rpx;
-  background: radial-gradient(circle at 32% 30%, #a8e0ff, #3a90e8, #0a3080);
-  box-shadow: 0 0 18rpx 5rpx rgba(80, 160, 255, 0.85),
-              inset -6rpx -6rpx 12rpx rgba(0, 10, 60, 0.55);
-}
-
-.p4 {
-  width: 26rpx; height: 26rpx; margin: -13rpx 0 0 -13rpx;
-  background: radial-gradient(circle at 32% 30%, #ffb090, #e05030, #801808);
-  box-shadow: 0 0 14rpx 4rpx rgba(255, 100, 60, 0.8),
-              inset -5rpx -5rpx 10rpx rgba(60, 5, 0, 0.6);
-}
-
-.p5 {
-  width: 50rpx; height: 50rpx; margin: -25rpx 0 0 -25rpx;
-  background: radial-gradient(circle at 32% 30%, #f8e0c0, #d8a870, #a06820);
-  box-shadow: 0 0 22rpx 7rpx rgba(220, 170, 90, 0.8),
-              inset -8rpx -8rpx 16rpx rgba(50, 20, 0, 0.5);
-}
-
-.p6 {
-  width: 42rpx; height: 42rpx; margin: -21rpx 0 0 -21rpx;
-  background: radial-gradient(circle at 32% 30%, #f8f0c8, #d8c080, #988030);
-  box-shadow: 0 0 20rpx 6rpx rgba(230, 200, 110, 0.8),
-              inset -7rpx -7rpx 14rpx rgba(50, 35, 0, 0.5);
-}
-
-/* ===== 前景 ===== */
-.container {
-  position: relative;
-  z-index: 1;
-  padding: 70rpx 40rpx 80rpx;
+  padding: 24rpx 24rpx 60rpx;
   box-sizing: border-box;
 }
 
-.brand {
-  text-align: center;
-  margin-bottom: 350rpx;
+/* 五行配色 */
+.el-wood  { color: #1ba784; }
+.el-fire  { color: #d8392b; }
+.el-earth { color: #9c6a3c; }
+.el-metal { color: #c79a2e; }
+.el-water { color: #2f6fd8; }
+
+.header {
+  padding: 16rpx 12rpx 24rpx;
+
+  .title {
+    font-size: 40rpx;
+    font-weight: 700;
+    color: #222;
+  }
+  .subtitle {
+    margin-top: 8rpx;
+    font-size: 24rpx;
+    color: #999;
+  }
 }
 
-.brand-en {
-  font-size: 22rpx;
-  letter-spacing: 14rpx;
-  color: rgba(160, 180, 255, 0.5);
-  margin-bottom: 16rpx;
-  padding-left: 14rpx;
-}
-
-.title {
-  font-size: 72rpx;
-  font-weight: 700;
-  letter-spacing: 8rpx;
-  background: linear-gradient(110deg, #ffffff 0%, #a9c0ff 35%, #d4a9ff 65%, #ffffff 100%);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 6s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-}
-
-.subtitle {
-  margin-top: 14rpx;
-  font-size: 26rpx;
-  letter-spacing: 16rpx;
-  color: rgba(200, 215, 255, 0.5);
-  padding-left: 16rpx;
-}
-
-/* ===== 表单面板 ===== */
 .panel {
-  padding: 36rpx 32rpx 8rpx;
-  border-radius: 32rpx;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1rpx solid rgba(170, 195, 255, 0.18);
-  box-shadow: 0 12rpx 56rpx rgba(0, 0, 0, 0.45),
-              0 1rpx 0 rgba(255, 255, 255, 0.1) inset;
-  backdrop-filter: blur(18rpx);
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 8rpx 28rpx;
 }
 
 .field {
-  margin-bottom: 28rpx;
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+
+  &:last-child { border-bottom: none; }
+
+  &.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 .field-label {
-  font-size: 24rpx;
-  letter-spacing: 2rpx;
-  color: rgba(200, 215, 255, 0.6);
-  margin-bottom: 14rpx;
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.tag-opt {
-  font-size: 20rpx;
-  padding: 2rpx 10rpx;
-  border-radius: 20rpx;
-  background: rgba(122, 162, 255, 0.15);
-  color: rgba(150, 180, 255, 0.7);
-  letter-spacing: 0;
-}
-
-/* 两列布局 */
-.row-fields {
-  display: flex;
-  gap: 24rpx;
-}
-
-.half-field {
-  flex: 1;
-  min-width: 0;
-}
-
-/* 分段开关 */
-.segment {
-  position: relative;
-  display: flex;
-  height: 72rpx;
-  border-radius: 20rpx;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1rpx solid rgba(170, 195, 255, 0.15);
-  overflow: hidden;
-}
-
-.seg-thumb {
-  position: absolute;
-  top: 5rpx;
-  bottom: 5rpx;
-  left: 5rpx;
-  right: 50%;
-  border-radius: 16rpx;
-  background: linear-gradient(135deg, #6a8dff, #9a7bff);
-  box-shadow: 0 4rpx 14rpx rgba(106, 141, 255, 0.5);
-  transition: left 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-              right 0.26s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.seg-thumb.slide-right {
-  left: 50%;
-  right: 5rpx;
-}
-
-.seg-item {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-  letter-spacing: 2rpx;
-  color: rgba(210, 222, 255, 0.6);
-  transition: color 0.26s ease;
-}
-
-.seg-item.active {
-  color: #fff;
-  font-weight: 600;
-}
-
-/* 文本输入框 */
-.text-input {
-  display: block;
-  width: 100%;
-  height: 84rpx;
-  padding: 0 24rpx;
-  box-sizing: border-box;
-  border-radius: 20rpx;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1rpx solid rgba(170, 195, 255, 0.15);
-  color: #eaf0ff;
+  color: #666;
   font-size: 28rpx;
 }
 
-.input-ph {
-  color: rgba(170, 195, 255, 0.35);
-  font-size: 28rpx;
-}
-
-/* 日期/时间 picker */
 .field-value {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 84rpx;
-  padding: 0 24rpx;
-  border-radius: 20rpx;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1rpx solid rgba(170, 195, 255, 0.15);
-  color: #eaf0ff;
-  font-size: 30rpx;
+  color: #222;
+  font-size: 28rpx;
+
+  .chevron {
+    margin-left: 12rpx;
+    color: #ccc;
+    font-size: 34rpx;
+  }
 }
 
-.chevron {
-  font-size: 44rpx;
-  line-height: 1;
-  color: rgba(170, 195, 255, 0.45);
-  transform: rotate(90deg);
-  display: inline-block;
+.text-input {
+  width: 100%;
+  font-size: 28rpx;
+  color: #222;
+}
+.input-ph { color: #bbb; }
+
+/* 分段选择 */
+.seg-line {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
 }
 
-/* 开关行 */
+.segment {
+  flex: 1;
+  display: flex;
+  background: #f2f3f5;
+  border-radius: 12rpx;
+  padding: 6rpx;
+
+  .seg-item {
+    flex: 1;
+    text-align: center;
+    padding: 16rpx 0;
+    font-size: 28rpx;
+    color: #888;
+    border-radius: 10rpx;
+
+    &.active {
+      background: #fff;
+      color: #b07a2c;
+      font-weight: 600;
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+    }
+  }
+}
+
+/* 开关 */
 .toggle-row {
   display: flex;
-  margin-bottom: 8rpx;
 }
-
 .toggle-cell {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8rpx;
+  padding-right: 28rpx;
 }
-
 .toggle-label {
-  font-size: 26rpx;
-  color: rgba(200, 215, 255, 0.7);
+  color: #666;
+  font-size: 28rpx;
 }
 
-/* ===== 排盘按钮 ===== */
+/* 即时起局预览 */
+.preview {
+  margin-top: 24rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 26rpx 28rpx;
+  display: flex;
+  align-items: center;
+}
+.preview-pillars {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+}
+.pp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pp-gz {
+  font-size: 52rpx;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.preview-side {
+  width: 64rpx;
+  flex: none;
+  margin-left: 16rpx;
+  padding: 14rpx 0;
+  border: 1rpx solid #e4d3a8;
+  border-radius: 12rpx;
+  color: #b07a2c;
+  font-size: 24rpx;
+  text-align: center;
+  letter-spacing: 4rpx;
+}
+.preview-solar {
+  display: block;
+  margin-top: 14rpx;
+  text-align: center;
+  color: #aaa;
+  font-size: 22rpx;
+}
+
+/* 开始按钮 */
 .cta {
-  margin-top: 40rpx;
-  height: 100rpx;
-  line-height: 100rpx;
-  border: none;
+  margin-top: 36rpx;
+  background: #1d1d1f;
+  color: #f3d9a3;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
   border-radius: 50rpx;
-  background: linear-gradient(135deg, #6a8dff 0%, #8a6cff 50%, #b06cff 100%);
-  box-shadow: 0 10rpx 36rpx rgba(120, 110, 255, 0.5),
-              0 1rpx 0 rgba(255, 255, 255, 0.3) inset;
+  padding: 24rpx 0;
 }
-
+.cta-hover {
+  opacity: 0.85;
+}
 .cta::after {
   border: none;
 }
 
-.cta-hover {
-  transform: scale(0.97);
-  opacity: 0.9;
+/* 功能入口卡片 */
+.tools {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 36rpx;
 }
+.tool-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
 
-.cta-text {
-  font-size: 34rpx;
-  font-weight: 600;
-  letter-spacing: 8rpx;
-  color: #fff;
-  padding-left: 8rpx;
+  .tool-icon { font-size: 52rpx; }
+  .tool-name { font-size: 28rpx; color: #333; font-weight: 600; }
+  .tool-desc { font-size: 22rpx; color: #aaa; }
 }
+.tool-hover { opacity: 0.85; }

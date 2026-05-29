@@ -1,0 +1,67 @@
+<view class="page">
+  <view class="intro">{{titleText}} · 以双方八字日主与日支合冲简评相合度</view>
+
+  <!-- 一方 -->
+  <view class="card">
+    <view class="card-title">{{labelA}}</view>
+    <view class="seg-line">
+      <view class="segment">
+        <view class="seg-item {{a.gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-who="a" data-gender="male">男</view>
+        <view class="seg-item {{a.gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-who="a" data-gender="female">女</view>
+      </view>
+    </view>
+    <picker mode="date" bindchange="onDateChange" data-who="a" value="{{a.date}}">
+      <view class="field"><text class="fl">出生日期</text><text class="fv">{{a.date}} ›</text></view>
+    </picker>
+    <picker mode="time" bindchange="onTimeChange" data-who="a" value="{{a.time}}">
+      <view class="field"><text class="fl">出生时间</text><text class="fv">{{a.time}} ›</text></view>
+    </picker>
+  </view>
+
+  <!-- 另一方 -->
+  <view class="card">
+    <view class="card-title">{{labelB}}</view>
+    <view class="seg-line">
+      <view class="segment">
+        <view class="seg-item {{b.gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-who="b" data-gender="male">男</view>
+        <view class="seg-item {{b.gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-who="b" data-gender="female">女</view>
+      </view>
+    </view>
+    <picker mode="date" bindchange="onDateChange" data-who="b" value="{{b.date}}">
+      <view class="field"><text class="fl">出生日期</text><text class="fv">{{b.date}} ›</text></view>
+    </picker>
+    <picker mode="time" bindchange="onTimeChange" data-who="b" value="{{b.time}}">
+      <view class="field"><text class="fl">出生时间</text><text class="fv">{{b.time}} ›</text></view>
+    </picker>
+  </view>
+
+  <button class="cta" bindtap="onMatch" hover-class="cta-hover">开始配对</button>
+
+  <!-- 结果 -->
+  <view class="result" wx:if="{{result}}">
+    <view class="score-box">
+      <view class="score">{{result.score}}</view>
+      <view class="level">{{result.level}}</view>
+    </view>
+
+    <view class="pair">
+      <view class="pair-col">
+        <view class="pair-h">{{labelA}}（日主 {{result.a.dayMaster}}）</view>
+        <view class="pair-bazi">
+          <text wx:for="{{result.a.bazi}}" wx:key="stem" class="pz">{{item.stem}}{{item.branch}}</text>
+        </view>
+      </view>
+      <view class="pair-col">
+        <view class="pair-h">{{labelB}}（日主 {{result.b.dayMaster}}）</view>
+        <view class="pair-bazi">
+          <text wx:for="{{result.b.bazi}}" wx:key="stem" class="pz">{{item.stem}}{{item.branch}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="notes">
+      <view class="note" wx:for="{{result.notes}}" wx:key="*this">· {{item}}</view>
+    </view>
+    <view class="disclaimer">仅供娱乐参考，不作人生决策依据。</view>
+  </view>
+</view>

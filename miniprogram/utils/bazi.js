@@ -415,6 +415,92 @@ function calcLiuYue(year, dayStem) {
   return list
 }
 
+// 把任意干支（大运 / 流年）展开成与四柱相同结构的一列，便于细盘左侧拼列
+// label 为列头文字（如 '大运' / '流年'）
+function buildGanZhiColumn(stem, branch, dayStem, label) {
+  const hidden = HIDDEN[branch].map(s => ({
+    stem: s,
+    cls: classOf(s),
+    god: tenGod(dayStem, s)
+  }))
+  return {
+    label,
+    stem,
+    branch,
+    stemClass: classOf(stem),
+    branchClass: classOf(branch),
+    mainStar: tenGod(dayStem, stem),
+    hidden,
+    starFortune: changSheng(dayStem, branch),
+    selfSitting: changSheng(stem, branch),
+    shensha: []
+  }
+}
+
+// ---------------- 合婚 / 配对 ----------------
+// 六合：子丑 寅亥 卯戌 辰酉 巳申 午未
+const LIU_HE = { 子: '丑', 丑: '子', 寅: '亥', 亥: '寅', 卯: '戌', 戌: '卯', 辰: '酉', 酉: '辰', 巳: '申', 申: '巳', 午: '未', 未: '午' }
+// 六冲：子午 丑未 寅申 卯酉 辰戌 巳亥
+const LIU_CHONG = { 子: '午', 午: '子', 丑: '未', 未: '丑', 寅: '申', 申: '寅', 卯: '酉', 酉: '卯', 辰: '戌', 戌: '辰', 巳: '亥', 亥: '巳' }
+// 天干五合：甲己 乙庚 丙辛 丁壬 戊癸
+const GAN_HE = { 甲: '己', 己: '甲', 乙: '庚', 庚: '乙', 丙: '辛', 辛: '丙', 丁: '壬', 壬: '丁', 戊: '癸', 癸: '戊' }
+
+// 计算两盘配对：input 同 paipan 参数
+function compat(a, b, type) {
+  const ra = paipan(a)
+  const rb = paipan(b)
+  const da = ra.dayMaster
+  const db = rb.dayMaster
+
+  let score = 60
+  const notes = []
+
+  // 日主关系（十神）
+  const rel = tenGod(da, db)
+  if (rel === '正官' || rel === '正印' || rel === '正财' || rel === '食神') {
+    score += 12; notes.push(`日主互为${rel}，相处和顺`)
+  } else if (rel === '七杀' || rel === '伤官') {
+    score -= 6; notes.push(`日主关系偏${rel}，需多包容`)
+  } else if (rel === '比肩' || rel === '劫财') {
+    score += 4; notes.push('日主同类，志趣相投')
+  } else {
+    notes.push(`日主关系：${rel}`)
+  }
+
+  // 日干五合
+  if (GAN_HE[da] === db) { score += 10; notes.push('日干天合，情投意合') }
+
+  // 日支六合 / 六冲
+  const ba = ra.dayPillar.branch
+  const bb = rb.dayPillar.branch
+  if (LIU_HE[ba] === bb) { score += 12; notes.push('日支六合，缘分深厚') }
+  else if (LIU_CHONG[ba] === bb) { score -= 12; notes.push('日支相冲，易有摩擦') }
+
+  // 年支（婚姻看属相）合冲
+  const ya = ra.yearPillar.branch
+  const yb = rb.yearPillar.branch
+  if (LIU_HE[ya] === yb) { score += 6; notes.push('生肖相合') }
+  else if (LIU_CHONG[ya] === yb) { score -= 6; notes.push('生肖相冲') }
+
+  if (score > 98) score = 98
+  if (score < 30) score = 30
+
+  let level
+  if (score >= 85) level = '非常相合'
+  else if (score >= 72) level = '比较相合'
+  else if (score >= 58) level = '尚可'
+  else level = '需要磨合'
+
+  return {
+    type: type === 'partner' ? '合伙配对' : '姻缘配对',
+    a: { dayMaster: da, bazi: [ra.yearPillar, ra.monthPillar, ra.dayPillar, ra.hourPillar] },
+    b: { dayMaster: db, bazi: [rb.yearPillar, rb.monthPillar, rb.dayPillar, rb.hourPillar] },
+    score,
+    level,
+    notes
+  }
+}
+
 // ---------------- 主入口 ----------------
 // input: { year, month, day, hour, gender:'male'|'female' }
 function paipan(input) {
@@ -481,6 +567,8 @@ function paipan(input) {
 module.exports = {
   STEMS, BRANCHES,
   paipan,
+  buildGanZhiColumn,
+  compat,
   tenGod,
   changSheng,
   classOf,
