@@ -14,6 +14,14 @@ Page({
     previewSolar: ''
   },
 
+  onLoad() {
+    const now = new Date()
+    const pad = n => String(n).padStart(2, '0')
+    const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+    const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`
+    this.setData({ date, time }, () => this.computePreview())
+  },
+
   onNameInput(e) {
     this.setData({ name: e.detail.value })
   },
