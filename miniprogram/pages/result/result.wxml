@@ -1,83 +1,157 @@
-<view class="container">
-  <view class="date-time-section">
-    <view class="date">日期:</view>
-    <view>{{date}}</view>
-    <view class="time">时间:</view>
-    <view>{{time}}</view>
-  </view>
-  
-  <!-- BaZi Table -->
-  <view class="bazi-table">
-    <view class="bazi-row">
-      <view class="label">年柱</view>
-      <view class="label">月柱</view>
-      <view class="label">日柱</view>
-      <view class="label">时柱</view>
+<!-- 四柱表格模板 -->
+<template name="pillarTable">
+  <view class="ptable">
+    <view class="prow phead">
+      <view class="plabel">日期</view>
+      <view class="pcell" wx:for="{{cols}}" wx:key="label" wx:for-item="c">{{c.label}}</view>
     </view>
-    <view class="bazi-content">
-        <view class="bazi-row">
-        <view class="shishenT  ten-gods-cell">{{tenGods.stems.year}}</view>
-        <view class="shishenT  ten-gods-cell">{{tenGods.stems.month}}</view>
-        <view class="shishenT  ten-gods-cell">{{tenGods.stems.day}}</view>
-        <view class="shishenT  ten-gods-cell">{{tenGods.stems.hour}}</view>
-        </view>
-        <view class="bazi-row">
-        <view class="pillar">{{bazi.year[0]}}</view>
-        <view class="pillar">{{bazi.month[0]}}</view>
-        <view class="pillar">{{bazi.day[0]}}</view>
-        <view class="pillar">{{bazi.hour[0]}}</view>
-        </view>
-        <view class="bazi-row">
-        <view class="pillar">{{bazi.year[1]}}</view>
-        <view class="pillar">{{bazi.month[1]}}</view>
-        <view class="pillar">{{bazi.day[1]}}</view>
-        <view class="pillar">{{bazi.hour[1]}}</view>
-        </view>
-        <view class="bazi-row">
-        <view class="shishen  ten-gods-cell">
-        <view wx:for="{{tenGods.branches.year}}" wx:key="index" >{{item}}</view>
-        </view>
-        <view class="shishen  ten-gods-cell">
-        <view wx:for="{{tenGods.branches.month}}" wx:key="index">{{item}}</view>
-        </view>
-        <view class="shishen  ten-gods-cell">
-        <view wx:for="{{tenGods.branches.day}}" wx:key="index">{{item}}</view>
-        </view>
-        <view class="shishen  ten-gods-cell">
-        <view wx:for="{{tenGods.branches.hour}}" wx:key="index" >{{item}}</view>
-        </view>
-        </view>
-    </view>
-  </view>
-  
-  <!-- DaYun Table -->
-  <view class="dayun-table">
-    <view class="title">大运列表</view>
-    <view>
-            <text>{{age+1}}岁起运</text>
-    </view>
-    <view class="dayun-row">
-    <!-- Display the years for each DaYun cycle -->
-    <view wx:for="{{daYunYears}}" wx:key="index" class="dayun-cell  years">{{item}}</view>
-  </view>
-    <view class="dayun-row time-spans">
-      <!-- Generate time spans for each DaYun cycle -->
-      <view wx:for="{{daYunStartAges}}" wx:key="index" class="dayun-cell">{{item}}</view>
-    </view>
-    <view class="dayun-row">
-      <!-- Generate characters for each DaYun cycle -->
-      <view wx:for="{{daYunList}}" wx:key="index" class="dayun-cell">{{item[0]}}</view>
-    </view>
-    <view class="dayun-row">
-      <!-- Generate characters for each DaYun cycle -->
-      <view wx:for="{{daYunList}}" wx:key="index" class="dayun-cell">{{item[1]}}</view>
-    </view>
-  </view>   
 
-  <button bindtap="navigateToBaziCommentary" class="commentary-button">批八字</button>
+    <view class="prow">
+      <view class="plabel">主星</view>
+      <view class="pcell god" wx:for="{{cols}}" wx:key="label" wx:for-item="c">{{c.mainStar}}</view>
+    </view>
+
+    <view class="prow tall">
+      <view class="plabel">天干</view>
+      <view class="pcell" wx:for="{{cols}}" wx:key="label" wx:for-item="c">
+        <text class="ganzhi {{c.stemClass}}">{{c.stem}}</text>
+      </view>
+    </view>
+
+    <view class="prow tall">
+      <view class="plabel">地支</view>
+      <view class="pcell" wx:for="{{cols}}" wx:key="label" wx:for-item="c">
+        <text class="ganzhi {{c.branchClass}}">{{c.branch}}</text>
+      </view>
+    </view>
+
+    <view class="prow">
+      <view class="plabel">藏干</view>
+      <view class="pcell col" wx:for="{{cols}}" wx:key="label" wx:for-item="c">
+        <text class="hidden {{h.cls}}" wx:for="{{c.hidden}}" wx:for-item="h" wx:key="stem">{{h.stem}}</text>
+      </view>
+    </view>
+
+    <view class="prow">
+      <view class="plabel">副星</view>
+      <view class="pcell col" wx:for="{{cols}}" wx:key="label" wx:for-item="c">
+        <text class="subgod" wx:for="{{c.hidden}}" wx:for-item="h" wx:key="stem">{{h.god}}</text>
+      </view>
+    </view>
+
+    <view class="prow">
+      <view class="plabel">星运</view>
+      <view class="pcell" wx:for="{{cols}}" wx:key="label" wx:for-item="c">{{c.starFortune}}</view>
+    </view>
+
+    <view class="prow">
+      <view class="plabel">自坐</view>
+      <view class="pcell" wx:for="{{cols}}" wx:key="label" wx:for-item="c">{{c.selfSitting}}</view>
+    </view>
+
+    <view class="prow" wx:if="{{showShensha}}">
+      <view class="plabel">神煞</view>
+      <view class="pcell col" wx:for="{{cols}}" wx:key="label" wx:for-item="c">
+        <text class="shensha" wx:for="{{c.shensha}}" wx:for-item="s" wx:key="*this">{{s}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<view class="page">
+  <!-- 顶部标签 -->
+  <view class="topbar">
+    <view class="tab {{activeTab=='info'?'on':''}}" data-tab="info" bindtap="switchTab">基本信息</view>
+    <view class="tab {{activeTab=='pan'?'on':''}}" data-tab="pan" bindtap="switchTab">基本排盘</view>
+    <view class="tab {{activeTab=='detail'?'on':''}}" data-tab="detail" bindtap="switchTab">专业细盘</view>
+    <view class="tab {{activeTab=='note'?'on':''}}" data-tab="note" bindtap="switchTab">断事笔记</view>
+  </view>
+
+  <!-- 命主信息 -->
+  <view class="infocard">
+    <view class="iname">{{name || '未命名'}}<text class="gtag">{{genderText}}</text></view>
+    <view class="iline">阳历：{{solarStr}}</view>
+    <view class="iline">日主：<text class="{{cols[2].stemClass}}">{{dayMaster}}</text></view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view wx:if="{{activeTab=='info'}}" class="tabpane">
+    <view class="summary-card">
+      <view class="sum-row">
+        <view class="sum-k">八字</view>
+        <view class="sum-v">
+          <text wx:for="{{cols}}" wx:key="label" wx:for-item="c">{{c.stem}}{{c.branch}} </text>
+        </view>
+      </view>
+      <view class="sum-row">
+        <view class="sum-k">日主</view>
+        <view class="sum-v">{{dayMaster}}</view>
+      </view>
+      <view class="sum-row">
+        <view class="sum-k">起运</view>
+        <view class="sum-v">{{startLuckText}}（{{daYunForward?'顺行':'逆行'}}）</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本排盘：四柱（含神煞，不含大运） -->
+  <view wx:if="{{activeTab=='pan'}}" class="tabpane">
+    <template is="pillarTable" data="{{cols: cols, showShensha: true}}" />
+  </view>
+
+  <!-- 专业细盘：四柱 + 大运 / 流年 / 流月 -->
+  <view wx:if="{{activeTab=='detail'}}" class="tabpane">
+    <template is="pillarTable" data="{{cols: cols, showShensha: true}}" />
+
+    <view class="luck">
+      <view class="luck-note">{{startLuckText}}　{{daYunForward?'顺行':'逆行'}}</view>
+
+      <view class="luck-block">
+        <view class="luck-title">大运</view>
+        <scroll-view scroll-x class="luck-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="luck-row">
+            <view class="luck-cell {{selectedDaYun==index?'sel':''}}" wx:for="{{daYun}}" wx:key="startYear" data-index="{{index}}" bindtap="onSelectDaYun">
+              <view class="ly-year">{{item.startYear}}</view>
+              <view class="ly-age">{{item.ageStart}}岁</view>
+              <view class="ly-gz"><text class="{{item.stemClass}}">{{item.stem}}</text><text class="god">{{item.stemGod}}</text></view>
+              <view class="ly-gz"><text class="{{item.branchClass}}">{{item.branch}}</text><text class="god">{{item.branchGod}}</text></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="luck-block">
+        <view class="luck-title">流年</view>
+        <scroll-view scroll-x class="luck-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="luck-row">
+            <view class="luck-cell {{selectedLiuNian==index?'sel':''}}" wx:for="{{liuNian}}" wx:key="year" data-index="{{index}}" bindtap="onSelectLiuNian">
+              <view class="ly-year">{{item.year}}</view>
+              <view class="ly-age">{{item.age}}岁</view>
+              <view class="ly-gz"><text class="{{item.stemClass}}">{{item.stem}}</text><text class="god">{{item.stemGod}}</text></view>
+              <view class="ly-gz"><text class="{{item.branchClass}}">{{item.branch}}</text><text class="god">{{item.branchGod}}</text></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="luck-block">
+        <view class="luck-title">流月</view>
+        <scroll-view scroll-x class="luck-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="luck-row">
+            <view class="luck-cell" wx:for="{{liuYue}}" wx:key="node">
+              <view class="ly-year">{{item.node}}</view>
+              <view class="ly-age">{{item.date}}</view>
+              <view class="ly-gz"><text class="{{item.stemClass}}">{{item.stem}}</text><text class="god">{{item.stemGod}}</text></view>
+              <view class="ly-gz"><text class="{{item.branchClass}}">{{item.branch}}</text><text class="god">{{item.branchGod}}</text></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 断事笔记 -->
+  <view wx:if="{{activeTab=='note'}}" class="tabpane">
+    <view class="empty">断事笔记功能开发中</view>
+  </view>
 </view>
-
-
-  
-
-
