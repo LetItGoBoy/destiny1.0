@@ -74,7 +74,7 @@
     </view>
   </view>
 
-  <!-- 即时起局预览 -->
+  <!-- 即时起局预览：显示此刻（页面加载时）的四柱，不随出生日期变化 -->
   <view class="preview" wx:if="{{preview}}">
     <view class="preview-pillars">
       <view class="pp-col" wx:for="{{preview}}" wx:key="stem">
@@ -83,7 +83,10 @@
         <text class="preview-solar">{{item.label}}</text>
       </view>
     </view>
-    <view class="preview-side">即时起局</view>
+    <view class="preview-side">
+      <view>即时起局</view>
+      <view class="preview-time">{{previewSolar}}</view>
+    </view>
   </view>
 
   <button class="cta" bindtap="onStartPaipan" hover-class="cta-hover">开始排盘</button>

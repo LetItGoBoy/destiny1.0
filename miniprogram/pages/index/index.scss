@@ -149,16 +149,24 @@ page {
   line-height: 1.25;
 }
 .preview-side {
-  width: 64rpx;
+  width: 72rpx;
   flex: none;
   margin-left: 16rpx;
-  padding: 14rpx 0;
+  padding: 14rpx 6rpx;
   border: 1rpx solid #e4d3a8;
   border-radius: 12rpx;
   color: #b07a2c;
   font-size: 24rpx;
   text-align: center;
   letter-spacing: 4rpx;
+}
+.preview-time {
+  margin-top: 6rpx;
+  font-size: 18rpx;
+  color: #cbb07a;
+  letter-spacing: 0;
+  line-height: 1.4;
+  word-break: break-all;
 }
 .preview-solar {
   display: block;

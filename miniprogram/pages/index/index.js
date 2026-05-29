@@ -19,7 +19,9 @@ Page({
     const pad = n => String(n).padStart(2, '0')
     const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
     const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`
-    this.setData({ date, time }, () => this.computePreview())
+    this.setData({ date, time })
+    // 即时起局：固定显示此刻的盘，不随出生日期输入变化
+    this.computeNowPreview(now)
   },
 
   onNameInput(e) {
@@ -27,7 +29,7 @@ Page({
   },
 
   selectGender(e) {
-    this.setData({ gender: e.currentTarget.dataset.gender }, () => this.computePreview())
+    this.setData({ gender: e.currentTarget.dataset.gender })
   },
 
   selectCalendar(e) {
@@ -35,11 +37,11 @@ Page({
   },
 
   onDateChange(e) {
-    this.setData({ date: e.detail.value }, () => this.computePreview())
+    this.setData({ date: e.detail.value })
   },
 
   onTimeChange(e) {
-    this.setData({ time: e.detail.value }, () => this.computePreview())
+    this.setData({ time: e.detail.value })
   },
 
   onLocationInput(e) {
@@ -54,24 +56,23 @@ Page({
     this.setData({ saveToRecord: e.detail.value })
   },
 
-  // 即时起局：根据当前选择计算四柱预览
-  computePreview() {
-    const { date, time, gender } = this.data
-    if (date === '请选择日期' || time === '请选择时间') return
-    const d = new Date(date.replace(/-/g, '/'))
-    const hour = parseInt(time.split(':')[0] || '0', 10)
+  // 即时起局：固定当前系统时刻，只在页面加载时计算一次
+  computeNowPreview(now) {
+    const pad = n => String(n).padStart(2, '0')
+    const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+    const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`
     const r = bazi.paipan({
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-      day: d.getDate(),
-      hour,
-      gender
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      day: now.getDate(),
+      hour: now.getHours(),
+      gender: this.data.gender
     })
     const labels = ['年', '月', '日', '时']
     const ps = [r.yearPillar, r.monthPillar, r.dayPillar, r.hourPillar]
     this.setData({
       preview: ps.map((p, i) => Object.assign({ label: labels[i] }, p)),
-      previewSolar: `公历：${date} ${time}`
+      previewSolar: `${date} ${time}`
     })
   },
 
