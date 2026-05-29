@@ -233,16 +233,11 @@ function yearGroupKey(branch) {
 }
 
 // 计算四柱神煞，返回 {year:[], month:[], day:[], hour:[]}
-function calcShenSha(pillars) {
-  const order = ['year', 'month', 'day', 'hour']
-  const result = { year: [], month: [], day: [], hour: [] }
-  const ctx = {
-    day: pillars.day, year: pillars.year, month: pillars.month, hour: pillars.hour
-  }
-  const add = (pos, name) => {
-    if (result[pos].indexOf(name) < 0) result[pos].push(name)
-  }
-
+// 依据命局四柱（ctx：{year,month,day,hour}，各含 stem/branch）解析每个神煞的
+// 命中目标集合与匹配方式（天干/地支/混合）。命局键（日干、年支、月支、三合局等）
+// 一旦确定，既可用于本命四柱，也可用于大运/流年柱的神煞判定。
+function shenShaTargets(ctx) {
+  const out = []
   for (const name in SHENSHA) {
     const rule = SHENSHA[name]
     let targets = [] // 命中的地支或天干集合
@@ -250,14 +245,12 @@ function calcShenSha(pillars) {
 
     if (rule.by === 'stem') {
       for (const ref of rule.refs) {
-        const stem = ctx[ref].stem
-        const arr = rule.map[stem]
+        const arr = rule.map[ctx[ref].stem]
         if (arr) targets = targets.concat(arr)
       }
     } else if (rule.by === 'sanhe') {
       for (const ref of rule.refs) {
-        const key = sanHeKey(ctx[ref].branch)
-        const arr = rule.map[key]
+        const arr = rule.map[sanHeKey(ctx[ref].branch)]
         if (arr) targets = targets.concat(arr)
       }
     } else if (rule.by === 'yearBranch') {
@@ -274,22 +267,47 @@ function calcShenSha(pillars) {
       if (v) { targets.push(v); matchKind = 'stem' }
     }
 
-    if (!targets.length) continue
+    if (targets.length) out.push({ name, targets, matchKind })
+  }
+  return out
+}
 
+// 判断单个柱（{stem,branch}）是否命中给定目标
+function pillarHits(p, targets, matchKind) {
+  for (const t of targets) {
+    if (matchKind === 'stem') { if (p.stem === t) return true }
+    else if (matchKind === 'mixed') { if (p.stem === t || p.branch === t) return true }
+    else if (p.branch === t) return true
+  }
+  return false
+}
+
+function calcShenSha(pillars) {
+  const order = ['year', 'month', 'day', 'hour']
+  const result = { year: [], month: [], day: [], hour: [] }
+  const ctx = {
+    day: pillars.day, year: pillars.year, month: pillars.month, hour: pillars.hour
+  }
+  const rules = shenShaTargets(ctx)
+  for (const r of rules) {
     for (const pos of order) {
-      const p = ctx[pos]
-      for (const t of targets) {
-        if (matchKind === 'stem') {
-          if (p.stem === t) add(pos, name)
-        } else if (matchKind === 'mixed') {
-          if (p.stem === t || p.branch === t) add(pos, name)
-        } else {
-          if (p.branch === t) add(pos, name)
-        }
+      if (pillarHits(ctx[pos], r.targets, r.matchKind) && result[pos].indexOf(r.name) < 0) {
+        result[pos].push(r.name)
       }
     }
   }
   return result
+}
+
+// 大运/流年柱神煙：以本命四柱为键，判断该干支命中哪些神煞
+function calcShenShaForGanZhi(stem, branch, natal) {
+  if (!natal) return []
+  const p = { stem, branch }
+  const out = []
+  for (const r of shenShaTargets(natal)) {
+    if (pillarHits(p, r.targets, r.matchKind) && out.indexOf(r.name) < 0) out.push(r.name)
+  }
+  return out
 }
 
 // ---------------- 起运 / 大运 ----------------
@@ -417,7 +435,7 @@ function calcLiuYue(year, dayStem) {
 
 // 把任意干支（大运 / 流年）展开成与四柱相同结构的一列，便于细盘左侧拼列
 // label 为列头文字（如 '大运' / '流年'）
-function buildGanZhiColumn(stem, branch, dayStem, label) {
+function buildGanZhiColumn(stem, branch, dayStem, label, natal) {
   const hidden = HIDDEN[branch].map(s => ({
     stem: s,
     cls: classOf(s),
@@ -433,7 +451,7 @@ function buildGanZhiColumn(stem, branch, dayStem, label) {
     hidden,
     starFortune: changSheng(dayStem, branch),
     selfSitting: changSheng(stem, branch),
-    shensha: []
+    shensha: calcShenShaForGanZhi(stem, branch, natal)
   }
 }
 
@@ -568,6 +586,7 @@ module.exports = {
   STEMS, BRANCHES,
   paipan,
   buildGanZhiColumn,
+  calcShenShaForGanZhi,
   compat,
   tenGod,
   changSheng,

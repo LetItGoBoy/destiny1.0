@@ -39,6 +39,14 @@ Page({
     const ps = [r.yearPillar, r.monthPillar, r.dayPillar, r.hourPillar]
     const cols = ps.map((p, i) => Object.assign({ label: labels[i] }, p))
 
+    // 大运/流年神煞所需的本命四柱（仅用 stem/branch 作键）
+    this.natal = {
+      year: { stem: r.yearPillar.stem, branch: r.yearPillar.branch },
+      month: { stem: r.monthPillar.stem, branch: r.monthPillar.branch },
+      day: { stem: r.dayPillar.stem, branch: r.dayPillar.branch },
+      hour: { stem: r.hourPillar.stem, branch: r.hourPillar.branch }
+    }
+
     this.setData({
       name,
       genderText: gender === 'female' ? '坤造' : '乾造',
@@ -100,8 +108,8 @@ Page({
   buildDetailCols(daYunEntry, liuNianEntry) {
     const dm = this.data.dayMaster
     const extra = []
-    if (daYunEntry) extra.push(bazi.buildGanZhiColumn(daYunEntry.stem, daYunEntry.branch, dm, '大运'))
-    if (liuNianEntry) extra.push(bazi.buildGanZhiColumn(liuNianEntry.stem, liuNianEntry.branch, dm, '流年'))
+    if (daYunEntry) extra.push(bazi.buildGanZhiColumn(daYunEntry.stem, daYunEntry.branch, dm, '大运', this.natal))
+    if (liuNianEntry) extra.push(bazi.buildGanZhiColumn(liuNianEntry.stem, liuNianEntry.branch, dm, '流年', this.natal))
     this.setData({ detailCols: extra.concat(this.data.cols) })
   }
 })
