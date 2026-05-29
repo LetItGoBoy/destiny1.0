@@ -1,74 +1,203 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    justify-content: center; /* Optional: to center vertically */
-  }
-  .date-time-section, .bazi-section, .bazi-table, .dayun-table {
-    width: 100%;
-    text-align: center;
-  }
-  .label {
-    color: #999;
-    font-weight: bold;
-    margin-bottom:20px;
+/* 八字排盘结果页 — 简洁清爽风格 */
 
-  }
-  .bazi-table, .dayun-table {
-    display: block;
-    margin-top: 20px;
-  }
-  .bazi-row, .dayun-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .pillar, .dayun-cell {
+page {
+  background: #f4f5f7;
+}
+
+.page {
+  min-height: 100vh;
+  padding-bottom: 60rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+/* 五行配色 */
+.el-wood  { color: #1ba784; }
+.el-fire  { color: #d8392b; }
+.el-earth { color: #9c6a3c; }
+.el-metal { color: #c79a2e; }
+.el-water { color: #2f6fd8; }
+
+/* 顶部标签栏 */
+.topbar {
+  display: flex;
+  background: #1d1d1f;
+
+  .tab {
     flex: 1;
-    border: 1px solid #ddd;
-    margin: 2px;
-    padding: 5px;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center; /* Optional: to center the text */
-    justify-content: center; /* Optional: to center vertically */
+    text-align: center;
+    padding: 28rpx 0;
+    color: #cfcfcf;
+    font-size: 28rpx;
+
+    &.on {
+      color: #d6a44a;
+      font-weight: 600;
+      box-shadow: inset 0 -4rpx 0 #d6a44a;
+    }
   }
-  
-  .commentary-button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #1AAD19; /* WeChat green */
-    color: white;
-    border: none;
-    border-radius: 5px;
+}
+
+/* 命主信息卡 */
+.infocard {
+  background: #2a2a2c;
+  color: #e9e3d6;
+  padding: 28rpx 32rpx;
+
+  .iname {
+    font-size: 30rpx;
+    font-weight: 600;
+    margin-bottom: 10rpx;
   }
-  
-  /* Adjust the sizes as needed to fit your content */
-  .pillar {
-    height: 40px; /* Set a fixed height for the BaZi cells */
-    font-size: 1em;
+  .gtag {
+    margin-left: 16rpx;
+    font-size: 24rpx;
+    color: #d6a44a;
   }
-  .shishenT{
-  
-    height: 40px; /* Set a fixed height for the BaZi cells */
+  .iline {
+    font-size: 24rpx;
+    color: #b9b3a6;
+    line-height: 1.7;
   }
-  .shishen {
-    margin-top: 20px;
-    height: 80px; /* Set a fixed height for the BaZi cells */
+}
+
+.tabpane {
+  padding: 0 0 30rpx;
+}
+
+/* 四柱表格 */
+.ptable {
+  background: #fff;
+}
+
+.prow {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1rpx solid #eee;
+
+  &.phead {
+    background: #fafafa;
+    color: #999;
+    font-size: 24rpx;
   }
-  .dayun-cell {
-    height: 30px; /* Set a fixed height for DaYun cells */
-    line-height: 30px; /* Center the text vertically */
+  &.tall {
+    min-height: 96rpx;
   }
-  
-  .title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px 0;
+}
+
+.plabel {
+  width: 96rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 24rpx;
+  background: #fafafa;
+  border-right: 1rpx solid #eee;
+}
+
+.pcell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14rpx 6rpx;
+  border-right: 1rpx solid #f2f2f2;
+
+  &:last-child { border-right: none; }
+
+  &.col {
+    flex-direction: column;
+    line-height: 1.5;
   }
-.years{
-    font-size: 9px;
-    
+  &.god { color: #555; }
+}
+
+.ganzhi {
+  font-size: 52rpx;
+  font-weight: 700;
+}
+
+.hidden { font-size: 24rpx; }
+.subgod { font-size: 24rpx; color: #666; }
+.shensha { font-size: 22rpx; color: #b07a2c; line-height: 1.6; }
+
+/* 基本信息卡 */
+.summary-card {
+  background: #fff;
+  margin-top: 16rpx;
+  padding: 10rpx 0;
+
+  .sum-row {
+    display: flex;
+    padding: 22rpx 32rpx;
+    border-bottom: 1rpx solid #f2f2f2;
+    &:last-child { border-bottom: none; }
+  }
+  .sum-k { width: 120rpx; color: #999; }
+  .sum-v { flex: 1; color: #333; letter-spacing: 2rpx; }
+}
+
+/* 大运 / 流年 / 流月 */
+.luck {
+  margin-top: 16rpx;
+  background: #fff;
+  padding: 10rpx 0 20rpx;
+}
+
+.luck-note {
+  padding: 20rpx 32rpx;
+  color: #777;
+  font-size: 24rpx;
+}
+
+.luck-block { margin-bottom: 6rpx; }
+
+.luck-title {
+  padding: 14rpx 32rpx;
+  color: #333;
+  font-weight: 600;
+  font-size: 26rpx;
+}
+
+.luck-scroll {
+  white-space: nowrap;
+  width: 100%;
+}
+
+.luck-row {
+  display: inline-flex;
+  padding: 0 20rpx;
+}
+
+.luck-cell {
+  flex: none;
+  width: 110rpx;
+  margin: 0 6rpx;
+  padding: 14rpx 0;
+  border-radius: 12rpx;
+  text-align: center;
+  background: #f6f6f6;
+
+  &.sel {
+    background: #fbf1de;
+    box-shadow: inset 0 0 0 2rpx #d6a44a;
+  }
+
+  .ly-year { font-size: 22rpx; color: #888; }
+  .ly-age  { font-size: 20rpx; color: #aaa; margin-bottom: 6rpx; }
+  .ly-gz {
+    font-size: 32rpx;
+    font-weight: 600;
+    line-height: 1.4;
+    .god { font-size: 20rpx; color: #999; margin-left: 4rpx; }
+  }
+}
+
+.empty {
+  text-align: center;
+  color: #aaa;
+  padding: 120rpx 0;
 }

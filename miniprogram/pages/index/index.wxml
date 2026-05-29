@@ -1,120 +1,90 @@
 <view class="page">
-  <!-- 背景层 -->
-  <view class="cosmos">
-    <view class="aurora a1"></view>
-    <view class="aurora a2"></view>
-    <view class="aurora a3"></view>
+  <view class="header">
+    <view class="title">八字排盘</view>
+    <view class="subtitle">输入出生信息，即时起局</view>
+  </view>
 
-    <view
-      class="star"
-      wx:for="{{stars}}"
-      wx:key="id"
-      style="top:{{item.top}}%;left:{{item.left}}%;width:{{item.size}}rpx;height:{{item.size}}rpx;animation-delay:{{item.delay}}s;animation-duration:{{item.duration}}s;"
-    ></view>
+  <view class="panel">
+    <!-- 姓名 -->
+    <view class="field">
+      <input
+        class="text-input"
+        placeholder="请输入姓名（选填）"
+        placeholder-class="input-ph"
+        bindinput="onNameInput"
+        value="{{name}}"
+      />
+    </view>
 
-    <view class="stage">
-      <view class="sun-halo"></view>
-      <view class="system">
-        <view class="sun"><view class="sun-spot"></view></view>
-        <view class="orbit ob1"><view class="spin"><view class="planet p1"></view></view></view>
-        <view class="orbit ob2"><view class="spin"><view class="planet p2"></view></view></view>
-        <view class="orbit ob3"><view class="spin"><view class="planet p3"></view></view></view>
-        <view class="orbit ob4"><view class="spin"><view class="planet p4"></view></view></view>
-        <view class="orbit ob5"><view class="spin"><view class="planet p5"></view></view></view>
-        <view class="orbit ob6"><view class="spin"><view class="planet p6"></view></view></view>
+    <!-- 性别 + 历法 -->
+    <view class="seg-line">
+      <view class="segment">
+        <view class="seg-item {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
+        <view class="seg-item {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
+      </view>
+      <view class="segment">
+        <view class="seg-item {{calendarType === 'solar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="solar">公历</view>
+        <view class="seg-item {{calendarType === 'lunar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="lunar">农历</view>
+      </view>
+    </view>
+
+    <!-- 出生日期 -->
+    <picker mode="date" bindchange="onDateChange" value="{{date}}">
+      <view class="field row">
+        <text class="field-label">出生日期</text>
+        <view class="field-value">
+          <text>{{date}}</text>
+          <text class="chevron">›</text>
+        </view>
+      </view>
+    </picker>
+
+    <!-- 出生时间 -->
+    <picker mode="time" bindchange="onTimeChange" value="{{time}}">
+      <view class="field row">
+        <text class="field-label">出生时间</text>
+        <view class="field-value">
+          <text>{{time}}</text>
+          <text class="chevron">›</text>
+        </view>
+      </view>
+    </picker>
+
+    <!-- 出生地 -->
+    <view class="field">
+      <input
+        class="text-input"
+        placeholder="出生地 省/市（选填，用于真太阳时）"
+        placeholder-class="input-ph"
+        bindinput="onLocationInput"
+        value="{{location}}"
+      />
+    </view>
+
+    <!-- 开关 -->
+    <view class="field toggle-row">
+      <view class="toggle-cell">
+        <text class="toggle-label">真太阳时</text>
+        <switch checked="{{isTrueSolarTime}}" bindchange="onTrueSolarTimeChange" color="#c79a2e" />
+      </view>
+      <view class="toggle-cell">
+        <text class="toggle-label">保存记录</text>
+        <switch checked="{{saveToRecord}}" bindchange="onSaveToRecordChange" color="#c79a2e" />
       </view>
     </view>
   </view>
 
-  <!-- 前景 -->
-  <view class="container">
-    <view class="brand">
-      <view class="brand-en">D E S T I N Y</view>
-      <view class="title">同乐命理</view>
-      <view class="subtitle">八 字 排 盘</view>
-    </view>
-
-    <view class="panel">
-      <!-- 姓名 -->
-      <view class="field">
-        <input
-          class="text-input"
-          placeholder="请输入姓名（选填）"
-          placeholder-class="input-ph"
-          bindinput="onNameInput"
-          value="{{name}}"
-        />
-      </view>
-
-      <!-- 性别 + 历法 -->
-      <view class="field row-fields">
-        <view class="half-field">
-          <view class="field-label">性别</view>
-          <view class="segment">
-            <view class="seg-thumb {{gender === 'female' ? 'slide-right' : ''}}"></view>
-            <view class="seg-item {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
-            <view class="seg-item {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
-          </view>
-        </view>
-        <view class="half-field">
-          <view class="field-label">历法</view>
-          <view class="segment">
-            <view class="seg-thumb {{calendarType === 'lunar' ? 'slide-right' : ''}}"></view>
-            <view class="seg-item {{calendarType === 'solar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="solar">公历</view>
-            <view class="seg-item {{calendarType === 'lunar' ? 'active' : ''}}" bindtap="selectCalendar" data-type="lunar">农历</view>
-          </view>
-        </view>
-      </view>
-
-      <!-- 出生日期 -->
-      <view class="field">
-        <view class="field-label">出生日期</view>
-        <picker mode="date" bindchange="onDateChange" value="{{date}}">
-          <view class="field-value">
-            <text>{{date}}</text>
-            <text class="chevron">›</text>
-          </view>
-        </picker>
-      </view>
-
-      <!-- 出生时间 -->
-      <view class="field">
-        <view class="field-label">出生时间</view>
-        <picker mode="time" bindchange="onTimeChange" value="{{time}}">
-          <view class="field-value">
-            <text>{{time}}</text>
-            <text class="chevron">›</text>
-          </view>
-        </picker>
-      </view>
-
-      <!-- 出生地 -->
-      <view class="field">
-        <view class="field-label">出生地 <text class="tag-opt">选填</text></view>
-        <input
-          class="text-input"
-          placeholder="省 / 市（用于真太阳时校正）"
-          placeholder-class="input-ph"
-          bindinput="onLocationInput"
-          value="{{location}}"
-        />
-      </view>
-
-      <!-- 开关行 -->
-      <view class="field toggle-row">
-        <view class="toggle-cell">
-          <text class="toggle-label">真太阳时</text>
-          <switch checked="{{isTrueSolarTime}}" bindchange="onTrueSolarTimeChange" color="#7aa2ff"/>
-        </view>
-        <view class="toggle-cell">
-          <text class="toggle-label">保存记录</text>
-          <switch checked="{{saveToRecord}}" bindchange="onSaveToRecordChange" color="#7aa2ff"/>
-        </view>
+  <!-- 即时起局预览 -->
+  <view class="preview" wx:if="{{preview}}">
+    <view class="preview-head">即时起局</view>
+    <view class="preview-pillars">
+      <view class="pp-col" wx:for="{{preview}}" wx:key="stem">
+        <text class="pp-gz {{item.stemClass}}">{{item.stem}}</text>
+        <text class="pp-gz {{item.branchClass}}">{{item.branch}}</text>
       </view>
     </view>
-
-    <button class="cta" bindtap="onStartPaipan" hover-class="cta-hover">
-      <text class="cta-text">开 始 排 盘</text>
-    </button>
+    <view class="preview-solar">{{previewSolar}}</view>
   </view>
+
+  <button class="cta" bindtap="onStartPaipan" hover-class="cta-hover">开始排盘</button>
 </view>
